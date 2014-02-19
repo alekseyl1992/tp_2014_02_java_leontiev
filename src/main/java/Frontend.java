@@ -28,20 +28,24 @@ public class Frontend extends HttpServlet {
 
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
-
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
-        if (request.getPathInfo().equals("/timer")) {
-            HttpSession session = request.getSession();
-            Long userId = (Long) session.getAttribute("userId");
-            if (userId == null) {
-                response.sendRedirect("/");
-            }
-            else
-                timerView(request, response);
+        switch (request.getPathInfo()) {
+            case "/timer": {
+                if (isLoggedIn(request))
+                    timerView(request, response);
+                else
+                    response.sendRedirect("/");
 
-            return;
+                return;
+            }
+
+            default: {
+                indexView(request, response, false);
+
+                return;
+            }
         }
     }
 
@@ -51,9 +55,10 @@ public class Frontend extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
 
         //test login and password
-        if (users.containsKey(request.getParameter("login"))
-                && users.get(request.getParameter("login")).equals(request.getParameter("password"))) {
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
 
+        if (testLogin(login, password)) {
             HttpSession session = request.getSession();
 
             //generate new uid
@@ -61,11 +66,25 @@ public class Frontend extends HttpServlet {
             session.setAttribute("userId", userId);
 
             response.sendRedirect("/timer");
+            return;
         }
         else {
             //wrong login
-            response.sendRedirect("/");
+            indexView(request, response, true);
+            return;
         }
+    }
+
+    private boolean isLoggedIn(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+
+        return userId != null;
+    }
+
+    private boolean testLogin(String login, String password) {
+        return users.containsKey(login)
+                && users.get(login).equals(password);
     }
 
     private void timerView(HttpServletRequest request, HttpServletResponse response)
@@ -76,11 +95,17 @@ public class Frontend extends HttpServlet {
 
         HttpSession session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
-        if (userId == null)
-            response.sendRedirect("/");
 
         pageVariables.put("userId", userId);
 
         response.getWriter().println(PageGenerator.getPage("timer.tml", pageVariables));
+    }
+
+    private void indexView(HttpServletRequest request, HttpServletResponse response, boolean wrongLogin)
+            throws ServletException, IOException  {
+        Map<String, Object> pageVariables = new HashMap<>();
+        pageVariables.put("wrongLogin", wrongLogin);
+
+        response.getWriter().println(PageGenerator.getPage("index.tml", pageVariables));
     }
 }
