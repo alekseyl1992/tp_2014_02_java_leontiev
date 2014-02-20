@@ -10,6 +10,15 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Frontend extends HttpServlet {
+    class Locations {
+        public static final String INDEX = "/index";
+        public static final String TIMER = "/timer";
+    }
+
+    class Templates {
+        public static final String INDEX = "index.tml";
+        public static final String TIMER = "timer.tml";
+    }
 
     private AtomicLong userIdGenerator = new AtomicLong();
     private static final Map<String, String> users = new HashMap<String, String>() {
@@ -32,11 +41,11 @@ public class Frontend extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
 
         switch (request.getPathInfo()) {
-            case "/timer": {
+            case Locations.TIMER: {
                 if (isLoggedIn(request))
                     timerView(request, response);
                 else
-                    response.sendRedirect("/");
+                    response.sendRedirect(Locations.INDEX);
 
                 return;
             }
@@ -65,7 +74,7 @@ public class Frontend extends HttpServlet {
             Long userId = userIdGenerator.getAndIncrement();
             session.setAttribute("userId", userId);
 
-            response.sendRedirect("/timer");
+            response.sendRedirect(Locations.TIMER);
             return;
         }
         else {
@@ -98,7 +107,7 @@ public class Frontend extends HttpServlet {
 
         pageVariables.put("userId", userId);
 
-        response.getWriter().println(PageGenerator.getPage("timer.tml", pageVariables));
+        response.getWriter().println(PageGenerator.getPage(Templates.TIMER, pageVariables));
     }
 
     private void indexView(HttpServletRequest request, HttpServletResponse response, boolean wrongLogin)
@@ -106,6 +115,6 @@ public class Frontend extends HttpServlet {
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("wrongLogin", wrongLogin);
 
-        response.getWriter().println(PageGenerator.getPage("index.tml", pageVariables));
+        response.getWriter().println(PageGenerator.getPage(Templates.INDEX, pageVariables));
     }
 }
