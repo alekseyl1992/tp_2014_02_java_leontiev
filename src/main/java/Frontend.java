@@ -21,7 +21,7 @@ public class Frontend extends HttpServlet {
     }
 
     private AtomicLong userIdGenerator = new AtomicLong();
-    private static final Map<String, String> users = new HashMap<String, String>() {
+    private static final Map<String, String> USERS = new HashMap<String, String>() {
         {
             put("test", "test");
             put("vasja", "vasja");
@@ -63,14 +63,12 @@ public class Frontend extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
-        //test login and password
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
         if (testLogin(login, password)) {
             HttpSession session = request.getSession();
 
-            //generate new uid
             Long userId = userIdGenerator.getAndIncrement();
             session.setAttribute("userId", userId);
 
@@ -78,7 +76,6 @@ public class Frontend extends HttpServlet {
             return;
         }
         else {
-            //wrong login
             indexView(request, response, true);
             return;
         }
@@ -92,8 +89,8 @@ public class Frontend extends HttpServlet {
     }
 
     private boolean testLogin(String login, String password) {
-        return users.containsKey(login)
-                && users.get(login).equals(password);
+        return USERS.containsKey(login)
+                && USERS.get(login).equals(password);
     }
 
     private void timerView(HttpServletRequest request, HttpServletResponse response)

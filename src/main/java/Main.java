@@ -13,7 +13,6 @@ public class Main {
 
         Server server = new Server(8081);
 
-        //реврайт для '/'
         RewriteHandler rewriteHandler = new RewriteHandler();
         rewriteHandler.setRewriteRequestURI(true);
         rewriteHandler.setRewritePathInfo(true);
@@ -23,11 +22,9 @@ public class Main {
         rule.setReplacement("/index");
         rewriteHandler.addRule(rule);
 
-        //динамика
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(frontend), "/*");
 
-        //статика
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase("static");
 
