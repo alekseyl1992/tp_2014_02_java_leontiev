@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c8695da-8551-4029-8131-aade9014e62e" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/AccountService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Frontend.java" afterPath="$PROJECT_DIR$/src/main/java/Frontend.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Main.java" afterPath="$PROJECT_DIR$/src/main/java/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tp_2014_02_java_leontiev.iml" afterPath="$PROJECT_DIR$/tp_2014_02_java_leontiev.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="tp_2014_02_java_leontiev.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -87,8 +89,19 @@
       <file leaf-file-name="Main.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="0" selection-start="583" selection-end="583" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
+            <state line="17" column="48" selection-start="744" selection-end="744" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AccountService.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/AccountService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="6" selection-start="449" selection-end="449" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="645">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -96,16 +109,7 @@
       <file leaf-file-name="Frontend.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Frontend.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="9" selection-start="921" selection-end="921" vertical-scroll-proportion="0.7093596" vertical-offset="0" max-vertical-offset="1824">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.tml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tml/index.tml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="24" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="435">
+            <state line="67" column="51" selection-start="2303" selection-end="2303" vertical-scroll-proportion="0.54545456" vertical-offset="1008" max-vertical-offset="1995">
               <folding />
             </state>
           </provider>
@@ -141,6 +145,7 @@
         <option value="$PROJECT_DIR$/tml/index.tml" />
         <option value="$PROJECT_DIR$/src/main/java/PageGenerator.java" />
         <option value="$PROJECT_DIR$/src/main/java/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/AccountService.java" />
         <option value="$PROJECT_DIR$/src/main/java/Frontend.java" />
       </list>
     </option>
@@ -183,7 +188,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-9" />
     <option name="y" value="-9" />
-    <option name="width" value="1220" />
+    <option name="width" value="1306" />
     <option name="height" value="786" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -214,6 +219,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -273,38 +279,6 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tp_2014_02_java_leontiev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tp_2014_02_java_leontiev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tp_2014_02_java_leontiev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tp_2014_02_java_leontiev" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
@@ -316,7 +290,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -627,6 +600,8 @@
       <workItem from="1392890704344" duration="1601000" />
       <workItem from="1392932118678" duration="467000" />
       <workItem from="1393011964286" duration="573000" />
+      <workItem from="1393017165518" duration="110000" />
+      <workItem from="1393043973484" duration="7556000" />
     </task>
     <task id="LOCAL-00001" summary="HW1 completed">
       <created>1392490448198</created>
@@ -636,10 +611,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27184000" />
+    <option name="totallyTimeSpent" value="34850000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1220" height="786" extended-state="6" />
+    <frame x="-9" y="-9" width="1306" height="786" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -661,8 +636,8 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27207062" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17327586" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32817337" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17255217" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32736155" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -721,6 +696,48 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="0" selection-start="974" selection-end="974" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="645">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Frontend.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="0" selection-start="1184" selection-end="1184" vertical-scroll-proportion="0.0" vertical-offset="570" max-vertical-offset="1710">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/PageGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="84" selection-start="616" selection-end="616" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="480">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="0" selection-start="584" selection-end="584" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="525">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Frontend.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="0" selection-start="858" selection-end="858" vertical-scroll-proportion="0.0" vertical-offset="405" max-vertical-offset="1305">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/PageGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="84" selection-start="616" selection-end="616" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="480">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/PageGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="84" selection-start="616" selection-end="616" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="480">
@@ -742,13 +759,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tml/index.tml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="24" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="435">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/PageGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="40" selection-start="369" selection-end="369" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="495">
@@ -766,13 +776,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Frontend.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="30" column="0" selection-start="1000" selection-end="1000" vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="1620">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tml/index.tml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="24" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="435">
           <folding />
         </state>
       </provider>
@@ -799,13 +802,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Frontend.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="30" column="0" selection-start="1000" selection-end="1000" vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="1620">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tml/index.tml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="24" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="435">
           <folding />
         </state>
       </provider>
@@ -836,13 +832,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tml/index.tml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="9" selection-start="116" selection-end="116" vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="315">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tml/timer.tml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="20" column="26" selection-start="689" selection-end="689" vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="480" />
@@ -858,13 +847,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Frontend.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="79" column="39" selection-start="2782" selection-end="2782" vertical-scroll-proportion="0.0" vertical-offset="1185" max-vertical-offset="1380">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tml/index.tml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="48" selection-start="163" selection-end="163" vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="315">
           <folding />
         </state>
       </provider>
@@ -992,13 +974,6 @@
         <state line="65" column="16" selection-start="3925" selection-end="3925" vertical-scroll-proportion="0.30745342" vertical-offset="861" max-vertical-offset="2775" />
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.7.0_45/src.zip!/java/util/HashMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="123" column="13" selection-start="5260" selection-end="5260" vertical-scroll-proportion="0.33333334" vertical-offset="1294" max-vertical-offset="17565">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="22" selection-start="426" selection-end="426" vertical-scroll-proportion="0.19417475" vertical-offset="0" max-vertical-offset="645">
@@ -1016,10 +991,19 @@
         <state line="27" column="19" selection-start="1550" selection-end="1550" vertical-scroll-proportion="0.4051724" vertical-offset="170" max-vertical-offset="750" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tml/index.tml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="24" selection-start="94" selection-end="94" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="435">
+        <state line="17" column="48" selection-start="744" selection-end="744" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/AccountService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="6" selection-start="449" selection-end="449" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="645">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1030,16 +1014,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="583" selection-end="583" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Frontend.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="9" selection-start="921" selection-end="921" vertical-scroll-proportion="0.7093596" vertical-offset="0" max-vertical-offset="1824">
+        <state line="67" column="51" selection-start="2303" selection-end="2303" vertical-scroll-proportion="0.54545456" vertical-offset="1008" max-vertical-offset="1995">
           <folding />
         </state>
       </provider>
