@@ -10,27 +10,20 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Frontend extends HttpServlet {
-    class Locations {
+    abstract class Locations {
         public static final String INDEX = "/index";
         public static final String TIMER = "/timer";
     }
 
-    class Templates {
+    abstract class Templates {
         public static final String INDEX = "index.tml";
         public static final String TIMER = "timer.tml";
     }
 
-    private AtomicLong userIdGenerator = new AtomicLong();
-    private static final Map<String, String> USERS = new HashMap<String, String>() {
-        {
-            put("test", "test");
-            put("vasja", "vasja");
-        }
-    };
+    private AccountService accountService = new AccountService();
 
     public static String getTime() {
         Date date = new Date();
-        date.getTime();
         DateFormat formatter = new SimpleDateFormat("HH.mm.ss");
         return formatter.format(date);
     }
@@ -42,16 +35,20 @@ public class Frontend extends HttpServlet {
 
         switch (request.getPathInfo()) {
             case Locations.TIMER: {
-                if (isLoggedIn(request))
+                if (accountService.isLoggedIn(request))
                     timerView(request, response);
                 else
                     response.sendRedirect(Locations.INDEX);
 
                 return;
             }
-
-            default: {
+            case Locations.INDEX: {
                 indexView(request, response, false);
+
+                return;
+            }
+            default: {
+                response.sendRedirect(Locations.INDEX);
 
                 return;
             }
@@ -66,12 +63,8 @@ public class Frontend extends HttpServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
-        if (testLogin(login, password)) {
-            HttpSession session = request.getSession();
-
-            Long userId = userIdGenerator.getAndIncrement();
-            session.setAttribute("userId", userId);
-
+        if (accountService.testLogin(login, password)) {
+            accountService.login(request);
             response.sendRedirect(Locations.TIMER);
             return;
         }
@@ -79,18 +72,6 @@ public class Frontend extends HttpServlet {
             indexView(request, response, true);
             return;
         }
-    }
-
-    private boolean isLoggedIn(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Long userId = (Long) session.getAttribute("userId");
-
-        return userId != null;
-    }
-
-    private boolean testLogin(String login, String password) {
-        return USERS.containsKey(login)
-                && USERS.get(login).equals(password);
     }
 
     private void timerView(HttpServletRequest request, HttpServletResponse response)
