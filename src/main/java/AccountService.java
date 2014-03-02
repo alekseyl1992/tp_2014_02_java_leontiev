@@ -1,37 +1,43 @@
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+import dao.UserDAO;
+import datasets.UserDataSet;
+import org.hibernate.SessionFactory;
 
 public class AccountService {
-    private AtomicLong userIdGenerator = new AtomicLong();
-    private static final Map<String, String> USERS = new HashMap<String, String>() {
-        {
-            put("test", "test");
-            put("vasja", "vasja");
-        }
-    };
+    private SessionFactory sessionFactory;
 
-    public void addUser(String login, String password) {
-        USERS.put(login, password);
+    public AccountService(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    public boolean isLoggedIn(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Long userId = (Long) session.getAttribute("userId");
+    public Long tryRegister(String login, String password, String email) {
+        UserDAO dao = new UserDAO(sessionFactory);
+        UserDataSet user = new UserDataSet(login, password, email);
 
-        return userId != null;
+        if (dao.save(user))
+            return user.getId();
+        else
+            return null;
     }
 
-    public boolean testLogin(String login, String password) {
-        return USERS.containsKey(login) && USERS.get(login).equals(password);
+    public Long tryLogin(String login, String password) {
+        UserDAO dao = new UserDAO(sessionFactory);
+        UserDataSet user = dao.get(login);
+
+        if (user != null && user.getPassword().equals(password))
+            return user.getId();
+        else
+            return null;
     }
 
-    public void login(HttpServletRequest request) {
-        HttpSession session = request.getSession();
+    public UserDataSet getUser(Long userId) {
+        if (userId == null)
+            return null;
 
-        Long userId = userIdGenerator.getAndIncrement();
-        session.setAttribute("userId", userId);
+        UserDAO dao = new UserDAO(sessionFactory);
+        return dao.get(userId);
+    }
+
+    public boolean exists(Long userId) {
+        return getUser(userId) != null;
     }
 }
