@@ -1,3 +1,5 @@
+package server;
+
 import org.hibernate.Session;
 import org.junit.*;
 import server.DatabaseService;

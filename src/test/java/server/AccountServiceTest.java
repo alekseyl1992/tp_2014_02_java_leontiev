@@ -1,3 +1,5 @@
+package server;
+
 import datasets.UserDataSet;
 import org.junit.*;
 import server.AccountService;

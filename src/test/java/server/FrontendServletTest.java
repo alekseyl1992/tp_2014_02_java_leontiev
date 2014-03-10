@@ -1,3 +1,5 @@
+package server;
+
 import org.junit.*;
 import server.AccountService;
 import server.DatabaseService;

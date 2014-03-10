@@ -21,10 +21,6 @@ public class AuthTest {
 
     @Before
     public void setUp() throws Exception {
-        DatabaseService service = new DatabaseService(DatabaseService.DB.H2);
-        accountService = new AccountService(service);
-        accountService.tryRegister(testLogin, testLogin, testLogin);
-
         server = new GameServer(8081, DatabaseService.DB.H2);
         gameThread = new Thread(new Runnable() {
             @Override
@@ -37,11 +33,21 @@ public class AuthTest {
                 }
             }
         });
+
         gameThread.start();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        server.stop();
     }
 
     @Test
     public void testLoginOk() throws Exception {
+        DatabaseService service = new DatabaseService(DatabaseService.DB.H2);
+        accountService = new AccountService(service);
+        accountService.tryRegister(testLogin, testLogin, testLogin);
+
         assertTrue(testLogin(testLogin));
     }
 
@@ -58,25 +64,29 @@ public class AuthTest {
         loginField.sendKeys(login);
         WebElement passwordField = driver.findElement(By.name("password"));
         passwordField.sendKeys(login);
-        WebElement emailField = driver.findElement(By.name("email"));
-        passwordField.sendKeys(login);
         WebElement submitButton = driver.findElement(By.name("submit"));
         submitButton.submit();
 
-        boolean result = (new WebDriverWait(driver, 10))
-                .until(new ExpectedCondition<Boolean>() {
-                    @Override
-                    @NotNull
-                    public Boolean apply(@NotNull WebDriver d) {
-                        WebElement el;
-                        try {
-                            el = d.findElement(By.id("login"));
-                            return el.getText().contains(login);
-                        } catch (NoSuchElementException e) {
-                            return false;
+        boolean result = false;
+
+        try {
+            result = (new WebDriverWait(driver, 10))
+                    .until(new ExpectedCondition<Boolean>() {
+                        @Override
+                        @NotNull
+                        public Boolean apply(@NotNull WebDriver d) {
+                            WebElement el;
+                            try {
+                                el = d.findElement(By.id("login"));
+                                return el.getText().contains(login);
+                            } catch (NoSuchElementException e) {
+                                return false;
+                            }
                         }
-                    }
-                });
+                    });
+        } catch (Exception e) {
+            result = false;
+        }
 
         driver.quit();
         return result;

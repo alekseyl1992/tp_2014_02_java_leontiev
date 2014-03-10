@@ -11,13 +11,14 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 public class GameServer {
     Server server;
+    boolean running = false;
 
     public GameServer(int port, DatabaseService.DB db) throws Exception {
         DatabaseService databaseService = new DatabaseService(db);
 
         FrontendServlet frontendServlet = new FrontendServlet(databaseService);
 
-        Server server = new Server(port);
+        server = new Server(port);
 
         RewriteHandler rewriteHandler = new RewriteHandler();
 
@@ -44,6 +45,18 @@ public class GameServer {
 
     public void start() throws Exception {
         server.start();
+        running = true;
         server.join();
+        running = false;
+
+    }
+
+    public void stop() throws Exception {
+        server.stop();
+        running = false;
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 }
