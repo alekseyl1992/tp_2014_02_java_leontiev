@@ -1,5 +1,6 @@
+package server;
+
 import datasets.UserDataSet;
-import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

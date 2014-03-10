@@ -1,7 +1,8 @@
 import org.hibernate.Session;
 import org.junit.*;
+import server.DatabaseService;
+
 import static junit.framework.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class DatabaseServiceTest {
     DatabaseService databaseService;

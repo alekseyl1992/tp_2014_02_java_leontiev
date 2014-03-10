@@ -1,24 +1,23 @@
-import datasets.UserDataSet;
+package server;
+
+import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
+import org.eclipse.jetty.rewrite.handler.RewriteHandler;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
-import org.eclipse.jetty.rewrite.handler.RewriteHandler;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 
-public class Main {
-    public static void main(String[] args) throws Exception {
-        DatabaseService databaseService = new DatabaseService(DatabaseService.DB.MYSQL);
+public class GameServer {
+    Server server;
+
+    public GameServer(int port, DatabaseService.DB db) throws Exception {
+        DatabaseService databaseService = new DatabaseService(db);
 
         FrontendServlet frontendServlet = new FrontendServlet(databaseService);
 
-        Server server = new Server(8081);
+        Server server = new Server(port);
 
         RewriteHandler rewriteHandler = new RewriteHandler();
 
@@ -41,7 +40,9 @@ public class Main {
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{rewriteHandler, resourceHandler, context});
         server.setHandler(handlers);
+    }
 
+    public void start() throws Exception {
         server.start();
         server.join();
     }

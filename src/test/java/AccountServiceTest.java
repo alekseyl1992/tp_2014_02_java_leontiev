@@ -1,7 +1,9 @@
 import datasets.UserDataSet;
 import org.junit.*;
+import server.AccountService;
+import server.DatabaseService;
+
 import static junit.framework.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class AccountServiceTest {
     AccountService accountService;
@@ -13,46 +15,64 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void testTryRegister() throws Exception {
-        assertTrue(accountService.tryRegister(
-                "testTryRegister",
-                "testTryRegister",
-                "testTryRegister") != null);
+    public void testTryRegisterOk() throws Exception {
+        String login = "testTryRegisterOk";
+
+        assertTrue(accountService.tryRegister(login, login, login) != null);
     }
 
     @Test
-    public void testTryLogin() throws Exception {
-        String login = "testTryLogin";
-        String password = "testTryLogin";
-        String email = "testTryLogin";
+    public void testTryRegisterFailed() throws Exception {
+        String login = "testTryRegisterFailed";
 
-        accountService.tryRegister(login, password, email);
-
-        assertTrue(accountService.tryLogin(login, password) != null);
+        assertTrue(accountService.tryRegister(login, login, login) != null);
+        assertFalse(accountService.tryRegister(login, login, login) != null);
     }
 
     @Test
-    public void testGetUser() throws Exception {
-        String login = "testGetUser";
-        String password = "testGetUser";
-        String email = "testGetUser";
+    public void testTryLoginOk() throws Exception {
+        String login = "testTryLoginOk";
 
-        Long uid = accountService.tryRegister(login, password, email);
+        accountService.tryRegister(login, login, login);
+
+        assertTrue(accountService.tryLogin(login, login) != null);
+    }
+
+    @Test
+    public void testTryLoginFailed() throws Exception {
+        String login = "testTryLoginFailed";
+
+        assertFalse(accountService.tryLogin(login, login) != null);
+    }
+
+    @Test
+    public void testGetUserOk() throws Exception {
+        String login = "testGetUserOk";
+
+        Long uid = accountService.tryRegister(login, login, login);
         UserDataSet user = accountService.getUser(uid);
 
         assertTrue(user.getId() == uid
                 && user.getLogin().equals(login)
-                && user.getPassword().equals(password)
-                && user.getEmail().equals(email));
+                && user.getPassword().equals(login)
+                && user.getEmail().equals(login));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testGetUserFailed() throws Exception {
+        String login = "testGetUserFailed";
+
+        Long uid = accountService.tryRegister(login, login, login);
+        UserDataSet user = accountService.getUser(uid + 1);
+
+        assertFalse(user.getId() == uid);
+        assertFalse(user.getLogin().equals(login));
     }
 
     @Test
     public void testExists() throws Exception {
         String login = "testExists";
-        String password = "testExists";
-        String email = "testExists";
-
-        Long uid = accountService.tryRegister(login, password, email);       UserDataSet user = accountService.getUser(uid);
+        Long uid = accountService.tryRegister(login, login, login);
 
         assertTrue(accountService.exists(uid));
     }

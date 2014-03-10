@@ -1,6 +1,7 @@
+package server;
+
 import dao.UserDAO;
 import datasets.UserDataSet;
-import org.hibernate.SessionFactory;
 
 public class AccountService {
     private DatabaseService databaseService;

@@ -1,15 +1,11 @@
-import datasets.UserDataSet;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.*;
+import server.FrontendServlet;
+import server.PageGenerator;
 
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import static junit.framework.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class PageGeneratorTest {
     @Test

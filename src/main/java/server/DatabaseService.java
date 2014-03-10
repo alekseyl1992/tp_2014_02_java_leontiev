@@ -1,3 +1,5 @@
+package server;
+
 import datasets.UserDataSet;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
