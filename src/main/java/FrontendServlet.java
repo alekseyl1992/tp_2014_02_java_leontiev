@@ -12,13 +12,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class FrontendServlet extends HttpServlet {
-    abstract class Locations {
+    public abstract class Locations {
         public static final String INDEX = "/index";
         public static final String TIMER = "/timer";
         public static final String REGISTRATION = "/registration";
     }
 
-    abstract class Templates {
+    public abstract class Templates {
         public static final String INDEX = "index.tml";
         public static final String TIMER = "timer.tml";
         public static final String REGISTRATION = "registration.tml";
@@ -26,8 +26,8 @@ public class FrontendServlet extends HttpServlet {
 
     private AccountService accountService;
 
-    public FrontendServlet(SessionFactory sessionFactory) {
-        accountService = new AccountService(sessionFactory);
+    public FrontendServlet(DatabaseService databaseService) {
+        accountService = new AccountService(databaseService);
     }
 
     public void doGet(HttpServletRequest request,
@@ -73,9 +73,6 @@ public class FrontendServlet extends HttpServlet {
 
 
         switch (request.getPathInfo()) {
-            case Locations.TIMER: {
-                return;
-            }
             case Locations.INDEX: {
                 tryLogin(request, response);
 

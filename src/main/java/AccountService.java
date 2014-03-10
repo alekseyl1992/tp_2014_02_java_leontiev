@@ -3,14 +3,14 @@ import datasets.UserDataSet;
 import org.hibernate.SessionFactory;
 
 public class AccountService {
-    private SessionFactory sessionFactory;
+    private DatabaseService databaseService;
 
-    public AccountService(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public AccountService(DatabaseService databaseService) {
+        this.databaseService = databaseService;
     }
 
     public Long tryRegister(String login, String password, String email) {
-        UserDAO dao = new UserDAO(sessionFactory);
+        UserDAO dao = new UserDAO(databaseService.getSessionFactory());
         UserDataSet user = new UserDataSet(login, password, email);
 
         if (dao.save(user))
@@ -20,7 +20,7 @@ public class AccountService {
     }
 
     public Long tryLogin(String login, String password) {
-        UserDAO dao = new UserDAO(sessionFactory);
+        UserDAO dao = new UserDAO(databaseService.getSessionFactory());
         UserDataSet user = dao.get(login);
 
         if (user != null && user.getPassword().equals(password))
@@ -33,7 +33,7 @@ public class AccountService {
         if (userId == null)
             return null;
 
-        UserDAO dao = new UserDAO(sessionFactory);
+        UserDAO dao = new UserDAO(databaseService.getSessionFactory());
         return dao.get(userId);
     }
 

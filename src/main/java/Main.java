@@ -14,22 +14,22 @@ import org.hibernate.service.ServiceRegistry;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Configuration configuration = new Configuration();
-        configuration.addAnnotatedClass(UserDataSet.class);
+        DatabaseService databaseService = new DatabaseService(DatabaseService.DB.MYSQL);
 
-        SessionFactory sessionFactory = createSessionFactory(configuration);
-
-        FrontendServlet frontendServlet = new FrontendServlet(sessionFactory);
+        FrontendServlet frontendServlet = new FrontendServlet(databaseService);
 
         Server server = new Server(8081);
 
         RewriteHandler rewriteHandler = new RewriteHandler();
-        rewriteHandler.setRewriteRequestURI(true);
-        rewriteHandler.setRewritePathInfo(true);
+
+        rewriteHandler.setRewriteRequestURI(false);
+        rewriteHandler.setRewritePathInfo(false);
         rewriteHandler.setOriginalPathAttribute("requestedPath");
         RedirectRegexRule rule = new RedirectRegexRule();
         rule.setRegex("/");
         rule.setReplacement("/index");
+        rule.setHandling(true);
+
         rewriteHandler.addRule(rule);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -44,20 +44,5 @@ public class Main {
 
         server.start();
         server.join();
-    }
-
-    public static SessionFactory createSessionFactory(Configuration configuration) {
-        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/javagame");
-        configuration.setProperty("hibernate.connection.username", "JavaGameUser");
-        configuration.setProperty("hibernate.connection.password", "JavaGamePswd");
-        configuration.setProperty("hibernate.show_sql", "true");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
-
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-        builder.applySettings(configuration.getProperties());
-        ServiceRegistry serviceRegistry = builder.build();
-        return configuration.buildSessionFactory(serviceRegistry);
     }
 }
