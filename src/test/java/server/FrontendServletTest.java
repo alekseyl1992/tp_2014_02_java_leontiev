@@ -1,9 +1,8 @@
 package server;
 
-import org.junit.*;
-import server.AccountService;
-import server.DatabaseService;
-import server.FrontendServlet;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class FrontendServletTest {
@@ -36,7 +35,6 @@ public class FrontendServletTest {
 
         when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));
         when(request.getSession()).thenReturn(httpSession);
-        //when(httpSession.getAttribute("userId")).thenReturn(1L);
     }
 
     @After
@@ -50,7 +48,7 @@ public class FrontendServletTest {
         frontend.doGet(request, response);
 
         assertTrue(stringWriter.toString()
-                .contains("<input type=\"submit\" value=\"Login\" />"));
+                .contains("<input type=\"submit\" name=\"submit\" value=\"Login\" />"));
     }
 
     @Test

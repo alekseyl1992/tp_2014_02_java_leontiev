@@ -71,6 +71,11 @@ public class AccountServiceTest {
         assertFalse(user.getLogin().equals(login));
     }
 
+    public void testGetNullUserFailed() throws Exception {
+        UserDataSet user = accountService.getUser(null);
+        assertTrue(user == null);
+    }
+
     @Test
     public void testExists() throws Exception {
         String login = "testExists";
