@@ -31,12 +31,19 @@ public class UserDAO {
 
     public UserDataSet get(long id) {
         Session session = sessionFactory.openSession();
-        return (UserDataSet) session.get(UserDataSet.class, id);
+        UserDataSet user = (UserDataSet) session.get(UserDataSet.class, id);;
+        session.close();
+
+        return user;
     }
 
     public UserDataSet get(String login) {
         Session session = sessionFactory.openSession();
         Criteria criteria = session.createCriteria(UserDataSet.class);
-        return (UserDataSet) criteria.add(Restrictions.eq("login", login)).uniqueResult();
+        UserDataSet user = (UserDataSet) criteria.add(
+                Restrictions.eq("login", login)).uniqueResult();
+        session.close();
+
+        return user;
     }
 }
