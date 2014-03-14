@@ -1,8 +1,9 @@
-package server;
+package frontend;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import server.IAccountService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +45,7 @@ public class FrontendServletTest {
 
     @Test
     public void testDoGetIndex() throws Exception {
-        when(request.getPathInfo()).thenReturn(FrontendServlet.Locations.INDEX);
+        when(request.getPathInfo()).thenReturn(Locations.INDEX);
         frontend.doGet(request, response);
 
         assertTrue(stringWriter.toString()
@@ -53,7 +54,7 @@ public class FrontendServletTest {
 
     @Test
     public void testDoGetRegistration() throws Exception {
-        when(request.getPathInfo()).thenReturn(FrontendServlet.Locations.REGISTRATION);
+        when(request.getPathInfo()).thenReturn(Locations.REGISTRATION);
         frontend.doGet(request, response);
 
         assertTrue(stringWriter.toString()
@@ -62,16 +63,23 @@ public class FrontendServletTest {
 
     @Test
     public void testDoGetTimer() throws Exception {
-        when(request.getPathInfo()).thenReturn(FrontendServlet.Locations.TIMER);
+        when(request.getPathInfo()).thenReturn(Locations.TIMER);
         frontend.doGet(request, response);
-        verify(response, atLeastOnce()).sendRedirect(FrontendServlet.Locations.INDEX);
+        verify(response, atLeastOnce()).sendRedirect(Locations.INDEX);
+    }
+
+    @Test
+    public void testDoGetWrongPage() throws Exception {
+        when(request.getPathInfo()).thenReturn("wrongPage");
+        frontend.doGet(request, response);
+        verify(response, atLeastOnce()).sendRedirect(Locations.INDEX);
     }
 
     @Test
     public void testDoPostToTimer() throws Exception {
-        when(request.getPathInfo()).thenReturn(FrontendServlet.Locations.TIMER);
+        when(request.getPathInfo()).thenReturn(Locations.TIMER);
         frontend.doPost(request, response);
-        verify(response, atLeastOnce()).sendRedirect(FrontendServlet.Locations.INDEX);
+        verify(response, atLeastOnce()).sendRedirect(Locations.INDEX);
     }
 
     private void registerUser(String name) throws Exception {
@@ -79,7 +87,7 @@ public class FrontendServletTest {
         when(request.getParameter("password")).thenReturn(name);
         when(request.getParameter("email")).thenReturn(name);
 
-        when(request.getPathInfo()).thenReturn(FrontendServlet.Locations.REGISTRATION);
+        when(request.getPathInfo()).thenReturn(Locations.REGISTRATION);
         frontend.doPost(request, response);
     }
 
@@ -87,9 +95,9 @@ public class FrontendServletTest {
     public void testDoPostToLoginOk() throws Exception {
         registerUser("testDoPostToRegisterFailed");
 
-        when(request.getPathInfo()).thenReturn(FrontendServlet.Locations.INDEX);
+        when(request.getPathInfo()).thenReturn(Locations.INDEX);
         frontend.doPost(request, response);
-        verify(response, atLeastOnce()).sendRedirect(FrontendServlet.Locations.TIMER);
+        verify(response, atLeastOnce()).sendRedirect(Locations.TIMER);
     }
 
     @Test
@@ -101,7 +109,7 @@ public class FrontendServletTest {
 
         when(accountService.tryLogin(login, login)).thenReturn(null);
 
-        when(request.getPathInfo()).thenReturn(FrontendServlet.Locations.INDEX);
+        when(request.getPathInfo()).thenReturn(Locations.INDEX);
         frontend.doPost(request, response);
         assertTrue(stringWriter.toString().contains("formError"));
     }
@@ -110,7 +118,7 @@ public class FrontendServletTest {
     public void testDoPostToRegisterOk() throws Exception {
         registerUser("testDoPostToRegisterFailed");
 
-        verify(response, atLeastOnce()).sendRedirect(FrontendServlet.Locations.TIMER);
+        verify(response, atLeastOnce()).sendRedirect(Locations.TIMER);
     }
 
     @Test

@@ -1,8 +1,7 @@
-package server;
+package frontend;
 
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public class PageGeneratorTest {
         pageVariables.put("serverTime", "15.57.11");
         pageVariables.put("login", "test");
 
-        String page = PageGenerator.getPage(FrontendServlet.Templates.TIMER, pageVariables);
+        String page = PageGenerator.getPage(Templates.TIMER, pageVariables);
 
         for (Object o : pageVariables.entrySet()) {
             Map.Entry pair = (Map.Entry) o;

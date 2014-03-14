@@ -1,6 +1,7 @@
-package server;
+package frontend;
 
 import datasets.UserDataSet;
+import server.IAccountService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,17 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class FrontendServlet extends HttpServlet {
-    public abstract class Locations {
-        public static final String INDEX = "/index";
-        public static final String TIMER = "/timer";
-        public static final String REGISTRATION = "/registration";
-    }
-
-    public abstract class Templates {
-        public static final String INDEX = "index.tml";
-        public static final String TIMER = "timer.tml";
-        public static final String REGISTRATION = "registration.tml";
-    }
 
     DateFormat formatter = new SimpleDateFormat("HH.mm.ss");
 

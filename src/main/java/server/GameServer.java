@@ -1,5 +1,6 @@
 package server;
 
+import frontend.FrontendServlet;
 import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
 import org.eclipse.jetty.rewrite.handler.RewriteHandler;
 import org.eclipse.jetty.server.Handler;
