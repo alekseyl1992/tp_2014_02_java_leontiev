@@ -13,10 +13,9 @@ public class GameServer {
     Server server;
     boolean running = false;
 
-    public GameServer(int port, DatabaseService.DB db) throws Exception {
-        DatabaseService databaseService = new DatabaseService(db);
-
-        FrontendServlet frontendServlet = new FrontendServlet(databaseService);
+    public GameServer(int port, DatabaseService db) throws Exception {
+        IAccountService accountService = new AccountService(db);
+        FrontendServlet frontendServlet = new FrontendServlet(accountService);
 
         server = new Server(port);
 

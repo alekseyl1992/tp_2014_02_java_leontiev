@@ -19,13 +19,13 @@ public class FrontendServletTest {
     HttpServletResponse response;
     HttpSession httpSession;
     StringWriter stringWriter;
-    AccountService accountService;
+    IAccountService accountService;
 
     @Before
     public void setUp() throws Exception {
-        DatabaseService service = new DatabaseService(DatabaseService.DB.H2);
-        accountService = new AccountService(service);
-        frontend = new FrontendServlet(service);
+        accountService = mock(IAccountService.class);
+
+        frontend = new FrontendServlet(accountService);
 
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
@@ -98,7 +98,8 @@ public class FrontendServletTest {
 
         when(request.getParameter("login")).thenReturn(login);
         when(request.getParameter("password")).thenReturn(login);
-        when(request.getParameter("email")).thenReturn(login);
+
+        when(accountService.tryLogin(login, login)).thenReturn(null);
 
         when(request.getPathInfo()).thenReturn(FrontendServlet.Locations.INDEX);
         frontend.doPost(request, response);
@@ -115,7 +116,7 @@ public class FrontendServletTest {
     @Test
     public void testDoPostToRegisterFailed() throws Exception {
         String login = "testDoPostToRegisterFailed";
-        Long uid = accountService.tryRegister(login, login, login);
+        when(accountService.tryRegister(login, login, login)).thenReturn(null);
 
         registerUser(login);
 

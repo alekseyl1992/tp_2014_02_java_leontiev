@@ -21,7 +21,11 @@ public class AuthTest {
 
     @Before
     public void setUp() throws Exception {
-        server = new GameServer(8081, DatabaseService.DB.H2);
+        DatabaseService service = new H2DatabaseService();
+        accountService = new AccountService(service);
+        accountService.tryRegister(testLogin, testLogin, testLogin);
+
+        server = new GameServer(8081, service);
         gameThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -44,10 +48,6 @@ public class AuthTest {
 
     @Test
     public void testLoginOk() throws Exception {
-        DatabaseService service = new DatabaseService(DatabaseService.DB.H2);
-        accountService = new AccountService(service);
-        accountService.tryRegister(testLogin, testLogin, testLogin);
-
         assertTrue(testLogin(testLogin));
     }
 

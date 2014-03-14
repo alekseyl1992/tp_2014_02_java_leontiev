@@ -2,15 +2,21 @@ package server;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
+
 import static junit.framework.Assert.*;
 
 public class GameServerTest {
     GameServer server;
 
+    @Rule
+    public Timeout globalTimeout = new Timeout(10000);
+
     @Before
     public void setUp() throws Exception {
-        server = new GameServer(8081, DatabaseService.DB.H2);
+        server = new GameServer(8081, new H2DatabaseService());
     }
 
     @After
@@ -37,7 +43,9 @@ public class GameServerTest {
     public void testStart() throws Exception {
         startServer();
         //wait for game to start
-        Thread.sleep(5000);
+        while (!server.isRunning()) {
+            Thread.sleep(100);
+        }
 
         assertTrue(server.isRunning());
     }
@@ -46,7 +54,9 @@ public class GameServerTest {
     public void testStop() throws Exception {
         startServer();
         //wait for game to start
-        Thread.sleep(5000);
+        while (!server.isRunning()) {
+            Thread.sleep(100);
+        }
 
         server.stop();
 

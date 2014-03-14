@@ -12,7 +12,7 @@ public class AccountServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        DatabaseService databaseService = new DatabaseService(DatabaseService.DB.H2);
+        DatabaseService databaseService = new H2DatabaseService();
         accountService = new AccountService(databaseService);
     }
 
@@ -54,10 +54,10 @@ public class AccountServiceTest {
         Long uid = accountService.tryRegister(login, login, login);
         UserDataSet user = accountService.getUser(uid);
 
-        assertTrue(user.getId() == uid
-                && user.getLogin().equals(login)
-                && user.getPassword().equals(login)
-                && user.getEmail().equals(login));
+        assertTrue(user.getId() == uid);
+        assertTrue(user.getLogin().equals(login));
+        assertTrue(user.getPassword().equals(login));
+        assertTrue(user.getEmail().equals(login));
     }
 
     @Test(expected = NullPointerException.class)

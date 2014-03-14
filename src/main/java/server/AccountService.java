@@ -3,7 +3,7 @@ package server;
 import dao.UserDAO;
 import datasets.UserDataSet;
 
-public class AccountService {
+public class AccountService implements IAccountService {
     private DatabaseService databaseService;
 
     public AccountService(DatabaseService databaseService) {

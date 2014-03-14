@@ -11,7 +11,7 @@ public class DatabaseServiceTest {
 
     @Test
     public void testGetSessionFactoryForMySQL() throws Exception {
-        databaseService = new DatabaseService(DatabaseService.DB.MYSQL);
+        databaseService = new MySqlDatabaseService();
         Session session = databaseService.getSessionFactory().openSession();
         assertTrue(session.isConnected());
         session.close();
@@ -19,7 +19,7 @@ public class DatabaseServiceTest {
 
     @Test
     public void testGetSessionFactoryForH2() throws Exception {
-        databaseService = new DatabaseService(DatabaseService.DB.H2);
+        databaseService = new H2DatabaseService();
         Session session = databaseService.getSessionFactory().openSession();
         assertTrue(session.isConnected());
         session.close();

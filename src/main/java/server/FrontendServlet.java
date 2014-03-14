@@ -25,10 +25,12 @@ public class FrontendServlet extends HttpServlet {
         public static final String REGISTRATION = "registration.tml";
     }
 
-    private AccountService accountService;
+    DateFormat formatter = new SimpleDateFormat("HH.mm.ss");
 
-    public FrontendServlet(DatabaseService databaseService) {
-        accountService = new AccountService(databaseService);
+    private IAccountService accountService;
+
+    public FrontendServlet(IAccountService accountService) {
+        this.accountService = accountService;
     }
 
     public void doGet(HttpServletRequest request,
@@ -139,7 +141,7 @@ public class FrontendServlet extends HttpServlet {
             throws ServletException, IOException  {
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("refreshPeriod", "1000");
-        pageVariables.put("serverTime", getTime());
+        pageVariables.put("serverTime", formatter.format(new Date()));
 
         HttpSession session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
@@ -164,11 +166,5 @@ public class FrontendServlet extends HttpServlet {
         pageVariables.put("failed", failed);
 
         response.getWriter().println(PageGenerator.getPage(Templates.REGISTRATION, pageVariables));
-    }
-
-    private static String getTime() {
-        Date date = new Date();
-        DateFormat formatter = new SimpleDateFormat("HH.mm.ss");
-        return formatter.format(date);
     }
 }
