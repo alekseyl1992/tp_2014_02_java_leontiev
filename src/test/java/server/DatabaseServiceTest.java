@@ -1,10 +1,9 @@
 package server;
 
 import org.hibernate.Session;
-import org.junit.*;
-import server.DatabaseService;
+import org.junit.Test;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class DatabaseServiceTest {
     DatabaseService databaseService;

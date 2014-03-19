@@ -6,7 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 public class GameServerTest {
     GameServer server;
@@ -25,15 +25,12 @@ public class GameServerTest {
     }
 
     private void startServer() {
-        Thread gameThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    server.start();
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
+        Thread gameThread = new Thread(() -> {
+            try {
+                server.start();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
             }
         });
         gameThread.start();

@@ -1,11 +1,11 @@
 package server;
 
 import datasets.UserDataSet;
-import org.junit.*;
-import server.AccountService;
-import server.DatabaseService;
+import org.junit.Before;
+import org.junit.Test;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class AccountServiceTest {
     AccountService accountService;

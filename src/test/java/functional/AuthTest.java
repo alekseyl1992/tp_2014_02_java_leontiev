@@ -1,16 +1,21 @@
 package functional;
 
-import com.sun.istack.internal.NotNull;
-import server.*;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import static junit.framework.Assert.*;
+import server.AccountService;
+import server.DatabaseService;
+import server.GameServer;
+import server.H2DatabaseService;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class AuthTest {
     AccountService accountService;
@@ -26,9 +31,7 @@ public class AuthTest {
         accountService.tryRegister(testLogin, testLogin, testLogin);
 
         server = new GameServer(8081, service);
-        gameThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        gameThread = new Thread(() -> {
                 try {
                     server.start();
                 }
@@ -36,7 +39,7 @@ public class AuthTest {
                     e.printStackTrace();
                 }
             }
-        });
+        );
 
         gameThread.start();
     }
@@ -70,20 +73,17 @@ public class AuthTest {
         boolean result = false;
 
         try {
-            result = (new WebDriverWait(driver, 10))
-                    .until(new ExpectedCondition<Boolean>() {
-                        @Override
-                        @NotNull
-                        public Boolean apply(@NotNull WebDriver d) {
-                            WebElement el;
-                            try {
-                                el = d.findElement(By.id("login"));
-                                return el.getText().contains(login);
-                            } catch (NoSuchElementException e) {
-                                return false;
-                            }
+            (new WebDriverWait(driver, 10))
+                    .until((WebDriver d) -> {
+                        WebElement el;
+                        try {
+                            el = d.findElement(By.id("login"));
+                            return el.getText().contains(login);
+                        } catch (NoSuchElementException e) {
+                            return false;
                         }
                     });
+            result = true;
         } catch (Exception e) {
             result = false;
         }

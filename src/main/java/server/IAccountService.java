@@ -1,6 +1,5 @@
 package server;
 
-import dao.UserDAO;
 import datasets.UserDataSet;
 
 public interface IAccountService {
