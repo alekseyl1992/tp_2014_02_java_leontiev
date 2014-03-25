@@ -2,6 +2,7 @@ package frontend;
 
 import datasets.UserDataSet;
 import server.IAccountService;
+import server.UserSession;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,10 +15,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class FrontendServlet extends HttpServlet {
-
-    DateFormat formatter = new SimpleDateFormat("HH.mm.ss");
-
+    private DateFormat formatter = new SimpleDateFormat("HH.mm.ss");
     private IAccountService accountService;
+    //TODO: cache logged in users
+    private Map<String, UserSession> sessionIdToUserSession = new HashMap<>();
 
     public FrontendServlet(IAccountService accountService) {
         this.accountService = accountService;
