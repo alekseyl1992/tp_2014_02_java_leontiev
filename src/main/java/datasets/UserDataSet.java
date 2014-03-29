@@ -1,5 +1,7 @@
 package datasets;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -9,7 +11,8 @@ public class UserDataSet implements Serializable {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name="seq_id", strategy="datasets.CustomIdGenerator")
+    @GeneratedValue(generator="seq_id")
     private long id;
 
     @Column(name = "login", unique = true)
