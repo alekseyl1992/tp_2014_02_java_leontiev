@@ -1,5 +1,6 @@
 package frontend;
 
+import messaging.MessageSystem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +27,8 @@ public class FrontendServletTest {
     public void setUp() throws Exception {
         accountService = mock(IAccountService.class);
 
-        frontend = new FrontendServlet(accountService);
+        MessageSystem ms = new MessageSystem(); //TODO
+        frontend = new FrontendServlet(ms, accountService);
 
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);

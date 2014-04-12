@@ -1,5 +1,6 @@
 package functional;
 
+import messaging.MessageSystem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,8 @@ public class AuthTest {
     @Before
     public void setUp() throws Exception {
         DatabaseService service = new H2DatabaseService();
-        accountService = new AccountService(service);
+        MessageSystem ms = new MessageSystem(); //TODO
+        accountService = new AccountService(ms, service);
         accountService.tryRegister(testLogin, testLogin, testLogin);
 
         server = new GameServer(8081, service);

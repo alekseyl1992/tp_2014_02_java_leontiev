@@ -1,6 +1,7 @@
 package server;
 
 import datasets.UserDataSet;
+import messaging.MessageSystem;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +14,9 @@ public class AccountServiceTest {
     @Before
     public void setUp() throws Exception {
         DatabaseService databaseService = new H2DatabaseService();
-        accountService = new AccountService(databaseService);
+        MessageSystem ms = new MessageSystem(); //TODO
+
+        accountService = new AccountService(ms, databaseService);
     }
 
     @Test

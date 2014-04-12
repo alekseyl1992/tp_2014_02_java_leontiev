@@ -1,6 +1,7 @@
 package server;
 
 import frontend.FrontendServlet;
+import messaging.MessageSystem;
 import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;
 import org.eclipse.jetty.rewrite.handler.RewriteHandler;
 import org.eclipse.jetty.server.Handler;
@@ -15,8 +16,12 @@ public class GameServer {
     boolean running = false;
 
     public GameServer(int port, DatabaseService db) throws Exception {
-        IAccountService accountService = new AccountService(db);
-        FrontendServlet frontendServlet = new FrontendServlet(accountService);
+        MessageSystem ms = new MessageSystem();
+        IAccountService accountService = new AccountService(ms, db);
+        FrontendServlet frontendServlet = new FrontendServlet(ms, accountService);
+
+        (new Thread(frontendServlet)).start();
+        (new Thread(accountService)).start();
 
         server = new Server(port);
 

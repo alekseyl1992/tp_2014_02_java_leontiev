@@ -2,12 +2,49 @@ package server;
 
 import dao.UserDAO;
 import datasets.UserDataSet;
+import messaging.Address;
+import messaging.MessageSystem;
+import messaging.Sleeper;
+import messaging.Subscriber;
 
-public class AccountService implements IAccountService {
+public class AccountService implements IAccountService, Subscriber, Runnable {
     private DatabaseService databaseService;
+    private MessageSystem ms;
+    private Address address;
 
-    public AccountService(DatabaseService databaseService) {
+    public AccountService(MessageSystem ms, DatabaseService databaseService) {
+        this.ms = ms;
         this.databaseService = databaseService;
+
+        this.address = new Address();
+        ms.addService(this);
+        ms.getAddressService().setAccountService(address);
+    }
+
+    @Override
+    public void run() {
+        while(true){
+            ms.execForSubscriber(this);
+            Sleeper.sleep(Sleeper.TICK);
+        }
+    }
+
+    @Override
+    public Address getAddress() {
+        return address;
+    }
+
+    @Override
+    public MessageSystem getMessageSystem() {
+        return ms;
+    }
+
+    public Long getUserId(String login, String password){
+        Sleeper.sleep(5000);
+        //TODO: should check password here
+        UserDAO dao = new UserDAO(databaseService.getSessionFactory());
+        UserDataSet user = dao.get(login);
+        return user.getId();
     }
 
     public Long tryRegister(String login, String password, String email) {
