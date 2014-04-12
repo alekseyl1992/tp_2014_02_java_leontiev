@@ -22,6 +22,8 @@ public class MsgLoginUserTest {
         String sid = "1";
 
         AccountService accountService = mock(AccountService.class);
+        MessageSystem ms = mock(MessageSystem.class);
+        when(accountService.getMessageSystem()).thenReturn(ms);
 
         MsgLoginUser msg = new MsgLoginUser(from, to, login, password, sid);
         msg.exec(accountService);

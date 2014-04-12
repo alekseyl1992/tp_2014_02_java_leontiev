@@ -26,7 +26,8 @@ public class AuthTest {
     Thread gameThread;
     GameServer server;
 
-    String testLogin = "testLogin";
+    String testLoginStr = "testLoginStr";
+    String testRegisterStr = "testRegisterStr";
 
     @Before
     public void setUp() throws Exception {
@@ -37,7 +38,7 @@ public class AuthTest {
         when(ms.getAddressService()).thenReturn(as);
 
         accountService = new AccountService(ms, service);
-        accountService.tryRegister(testLogin, testLogin, testLogin);
+        accountService.tryRegister(testLoginStr, testLoginStr, testLoginStr);
 
         server = new GameServer(8081, service);
         gameThread = new Thread(() -> {
@@ -60,12 +61,23 @@ public class AuthTest {
 
     @Test
     public void testLoginOk() throws Exception {
-        assertTrue(testLogin(testLogin));
+        assertTrue(testLogin(testLoginStr));
     }
 
     @Test
     public void testLoginFailed() throws Exception {
         assertFalse(testLogin("trololo"));
+    }
+
+    @Test
+    public void testRegisterOk() throws Exception {
+        assertTrue(testRegister(testRegisterStr));
+    }
+
+    @Test
+    public void testRegisterFailed() throws Exception {
+        testRegister(testRegisterStr);
+        assertFalse(testRegister(testRegisterStr));
     }
 
     public boolean testLogin(final String login) throws Exception {
@@ -79,6 +91,26 @@ public class AuthTest {
         WebElement submitButton = driver.findElement(By.name("submit"));
         submitButton.submit();
 
+        return testAuth(driver, login);
+    }
+
+    public boolean testRegister(final String login) throws Exception {
+        WebDriver driver = new FirefoxDriver();
+        driver.get("http://127.0.0.1:8081/registration");
+
+        WebElement loginField = driver.findElement(By.name("login"));
+        loginField.sendKeys(login);
+        WebElement passwordField = driver.findElement(By.name("password"));
+        passwordField.sendKeys(login);
+        WebElement emailField = driver.findElement(By.name("email"));
+        emailField.sendKeys(login);
+        WebElement submitButton = driver.findElement(By.name("submit"));
+        submitButton.submit();
+
+        return testAuth(driver, login);
+    }
+
+    public boolean testAuth(WebDriver driver, String login) {
         boolean result = false;
 
         try {

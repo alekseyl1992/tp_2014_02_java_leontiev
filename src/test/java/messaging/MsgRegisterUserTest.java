@@ -23,6 +23,8 @@ public class MsgRegisterUserTest {
         String sid = "1";
 
         AccountService accountService = mock(AccountService.class);
+        MessageSystem ms = mock(MessageSystem.class);
+        when(accountService.getMessageSystem()).thenReturn(ms);
 
         MsgRegisterUser msg = new MsgRegisterUser(from, to, login, password, email, sid);
         msg.exec(accountService);
