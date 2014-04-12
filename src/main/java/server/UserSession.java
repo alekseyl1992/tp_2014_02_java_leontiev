@@ -6,13 +6,14 @@ import messaging.AddressService;
 public class UserSession {
     private Address accountService;
 
-    private String name;
+    private String login;
     private String sessionId;
     private Long userId;
+    private boolean isWrong = false;
 
     public UserSession(String sessionId, String name, AddressService addressService) {
         this.sessionId = sessionId;
-        this.name = name;
+        this.login = name;
         this.accountService = addressService.getAccountService();
     }
 
@@ -20,8 +21,8 @@ public class UserSession {
         return accountService;
     }
 
-    public String getName(){
-        return name;
+    public String getLogin(){
+        return login;
     }
 
     public String getSessionId() {
@@ -33,6 +34,12 @@ public class UserSession {
     }
 
     public void setUserId(Long userId) {
+        if (userId == null)
+            isWrong = true;
         this.userId = userId;
+    }
+
+    public boolean isWrong() {
+        return isWrong;
     }
 }

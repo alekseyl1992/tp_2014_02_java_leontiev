@@ -16,11 +16,12 @@
 
         <div>Not registered yet? Click <a href="/registration">here</a>!</div>
 
-        <div class="formError">Wrong login and/or password!</div>
+        <div class="spin" id="spin"></div>
+        <div class="formError" id="wrong">Wrong login and/or password!</div>
 	</form>
 	
-	<img src="/img/jetty-logo-80x22.png" />
     <script src="/js/jquery.js" ></script>
+    <script src="/js/spin.js"></script>
     <script src="/js/index.js"></script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package frontend;
 
-import datasets.UserDataSet;
 import messaging.*;
 import server.IAccountService;
 import server.UserSession;
@@ -32,7 +31,7 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
 
         this.address = new Address();
         ms.addService(this);
-        ms.getAddressService().setAccountService(address);
+        ms.getAddressService().setFrontendServlet(address);
     }
 
     @Override
@@ -69,37 +68,23 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
 
         switch (request.getPathInfo()) {
             case Locations.TIMER: {
-                HttpSession session = request.getSession();
-                Long userId = (Long) session.getAttribute("userId");
-
-                if (accountService.exists(userId))
-                    timerView(request, response);
-                else
-                    response.sendRedirect(Locations.INDEX);
-
+                timerView(request, response);
                 return;
             }
             case Locations.INDEX: {
-                indexView(request, response, false);
-
+                indexView(request, response);
                 return;
             }
             case Locations.POLL: {
                 pollView(request, response);
-
                 return;
             }
             case Locations.REGISTRATION: {
                 registrationView(request, response, false);
-
                 return;
             }
-
-            default: {
+            default:
                 response.sendRedirect(Locations.INDEX);
-
-                return;
-            }
         }
     }
 
@@ -175,13 +160,16 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         pageVariables.put("serverTime", formatter.format(new Date()));
 
         HttpSession session = request.getSession();
-        Long userId = (Long) session.getAttribute("userId");
-
-        UserDataSet user = accountService.getUser(userId);
-        pageVariables.put("login", user.getLogin());
-
-        response.getWriter().println(PageGenerator.getPage(Templates.TIMER, pageVariables));
-    }
+        UserSession userSession = sessionIdToUserSession.get(session.getId());
+        if (userSession == null) {
+            response.sendRedirect(Locations.INDEX);
+        }
+        else {
+            pageVariables.put("login", userSession.getLogin());
+            pageVariables.put("id", + userSession.getUserId());
+            response.getWriter().println(PageGenerator.getPage(Templates.TIMER, pageVariables));
+        }
+   }
 
     private void pollView(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
@@ -192,6 +180,8 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
 
         if (userSession == null)
             result = "error";
+        else if (userSession.isWrong())
+            result = "wrong";
         else if (userSession.getUserId() == null)
             result = "wait";
         else
@@ -200,10 +190,10 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         response.getWriter().print(result);
     }
 
-    private void indexView(HttpServletRequest request, HttpServletResponse response, boolean failed)
+    //TODO: maybe renderPage()?
+    private void indexView(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("failed", failed);
 
         response.getWriter().println(PageGenerator.getPage(Templates.INDEX, pageVariables));
     }

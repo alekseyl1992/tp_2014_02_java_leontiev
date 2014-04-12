@@ -1,7 +1,7 @@
 package messaging;
 import server.AccountService;
 
-public abstract class MsgToAS extends Msg{
+public abstract class MsgToAS extends Msg {
 
 	public MsgToAS(Address from, Address to) {
 		super(from, to);		

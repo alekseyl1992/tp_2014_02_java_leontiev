@@ -44,7 +44,10 @@ public class AccountService implements IAccountService, Subscriber, Runnable {
         //TODO: should check password here
         UserDAO dao = new UserDAO(databaseService.getSessionFactory());
         UserDataSet user = dao.get(login);
-        return user.getId();
+        if (user != null)
+            return user.getId();
+        else
+            return null;
     }
 
     public Long tryRegister(String login, String password, String email) {

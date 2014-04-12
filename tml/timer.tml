@@ -22,5 +22,6 @@
     <p>Client time: <span id='ClientTime'></span></p>
     <p>Server time: ${serverTime}</p>
     <p id="login">Login: ${login}</p>
+    <p id="id">ID: ${id}</p>
 </body>
 </html>
