@@ -1,5 +1,6 @@
 package frontend;
 
+import messaging.AddressService;
 import messaging.MessageSystem;
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +28,10 @@ public class FrontendServletTest {
     public void setUp() throws Exception {
         accountService = mock(IAccountService.class);
 
-        MessageSystem ms = new MessageSystem(); //TODO
+        MessageSystem ms = mock(MessageSystem.class);
+        AddressService as = mock(AddressService.class);
+        when(ms.getAddressService()).thenReturn(as);
+
         frontend = new FrontendServlet(ms);
 
         request = mock(HttpServletRequest.class);
@@ -51,7 +55,7 @@ public class FrontendServletTest {
         frontend.doGet(request, response);
 
         assertTrue(stringWriter.toString()
-                .contains("<input type=\"submit\" name=\"submit\" value=\"Login\" />"));
+                .contains("action=\"/login\""));
     }
 
     @Test
@@ -60,7 +64,7 @@ public class FrontendServletTest {
         frontend.doGet(request, response);
 
         assertTrue(stringWriter.toString()
-                .contains("<input type=\"submit\" value=\"Register\" />"));
+                .contains("action=\"/register\""));
     }
 
     @Test
@@ -95,41 +99,43 @@ public class FrontendServletTest {
 
     @Test
     public void testDoPostToLoginOk() throws Exception {
-        registerUser("testDoPostToRegisterFailed");
+        when(request.getPathInfo()).thenReturn(Locations.LOGIN);
+        when(request.getParameter("login")).thenReturn("user");
+        when(request.getParameter("password")).thenReturn("pswd");
 
-        when(request.getPathInfo()).thenReturn(Locations.INDEX);
         frontend.doPost(request, response);
-        verify(response, atLeastOnce()).sendRedirect(Locations.TIMER);
+        assertTrue(stringWriter.toString().contains("auth started"));
     }
 
     @Test
     public void testDoPostToLoginFailed() throws Exception {
-        String login = "testDoPostToLoginFailed";
+        when(request.getPathInfo()).thenReturn(Locations.LOGIN);
+        when(request.getParameter("login")).thenReturn("");
+        when(request.getParameter("password")).thenReturn(null);
 
-        when(request.getParameter("login")).thenReturn(login);
-        when(request.getParameter("password")).thenReturn(login);
-
-        when(accountService.tryLogin(login, login)).thenReturn(null);
-
-        when(request.getPathInfo()).thenReturn(Locations.INDEX);
         frontend.doPost(request, response);
-        assertTrue(stringWriter.toString().contains("formError"));
+        assertTrue(stringWriter.toString().contains("wrong"));
     }
 
     @Test
     public void testDoPostToRegisterOk() throws Exception {
-        registerUser("testDoPostToRegisterFailed");
+        when(request.getPathInfo()).thenReturn(Locations.REGISTER);
+        when(request.getParameter("login")).thenReturn("user");
+        when(request.getParameter("password")).thenReturn("pswd");
+        when(request.getParameter("email")).thenReturn("a@b.com");
 
-        verify(response, atLeastOnce()).sendRedirect(Locations.TIMER);
+        frontend.doPost(request, response);
+        assertTrue(stringWriter.toString().contains("registration started"));
     }
 
     @Test
     public void testDoPostToRegisterFailed() throws Exception {
-        String login = "testDoPostToRegisterFailed";
-        when(accountService.tryRegister(login, login, login)).thenReturn(null);
+        when(request.getPathInfo()).thenReturn(Locations.REGISTER);
+        when(request.getParameter("login")).thenReturn("");
+        when(request.getParameter("password")).thenReturn("pswd");
+        when(request.getParameter("password")).thenReturn("a@b.com");
 
-        registerUser(login);
-
-        assertTrue(stringWriter.toString().contains("formError"));
+        frontend.doPost(request, response);
+        assertTrue(stringWriter.toString().contains("wrong"));
     }
 }

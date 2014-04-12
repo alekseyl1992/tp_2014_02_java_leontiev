@@ -165,7 +165,7 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         }
         else {
             pageVariables.put("login", userSession.getLogin());
-            pageVariables.put("id", + userSession.getUserId());
+            pageVariables.put("id", userSession.getUserId());
             response.getWriter().println(PageGenerator.getPage(Templates.TIMER, pageVariables));
         }
    }

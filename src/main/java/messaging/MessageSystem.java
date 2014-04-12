@@ -9,11 +9,11 @@ public class MessageSystem {
 	private Map<Address, ConcurrentLinkedQueue<Msg>> queues = new HashMap<Address, ConcurrentLinkedQueue<Msg>>();
 	private AddressService addressService = new AddressService();
 	
-	public void addService(Subscriber subscriber){
+	public void addService(Subscriber subscriber) {
 		queues.put(subscriber.getAddress(), new ConcurrentLinkedQueue<Msg>());
 	}
 	
-	public void sendMessage(Msg message){
+	public void sendMessage(Msg message) {
 		Queue<Msg> messageQueue = queues.get(message.getTo());
 		messageQueue.add(message);		
 	}
@@ -23,13 +23,13 @@ public class MessageSystem {
 		if(messageQueue == null){
 			return;
 		}
-		while(!messageQueue.isEmpty()){
+		while(!messageQueue.isEmpty()) {
 			Msg message = messageQueue.poll();
 			message.exec(subscriber);
 		}
 	}
 	
-	public AddressService getAddressService(){
+	public AddressService getAddressService() {
 		return addressService;
 	}
 }
