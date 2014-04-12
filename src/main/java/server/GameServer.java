@@ -18,7 +18,7 @@ public class GameServer {
     public GameServer(int port, DatabaseService db) throws Exception {
         MessageSystem ms = new MessageSystem();
         IAccountService accountService = new AccountService(ms, db);
-        FrontendServlet frontendServlet = new FrontendServlet(ms, accountService);
+        FrontendServlet frontendServlet = new FrontendServlet(ms);
 
         (new Thread(frontendServlet)).start();
         (new Thread(accountService)).start();

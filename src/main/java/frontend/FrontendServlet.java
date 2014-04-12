@@ -1,7 +1,6 @@
 package frontend;
 
 import messaging.*;
-import server.IAccountService;
 import server.UserSession;
 
 import javax.servlet.ServletException;
@@ -18,15 +17,12 @@ import java.util.Map;
 
 public class FrontendServlet extends HttpServlet implements Subscriber, Runnable {
     private DateFormat formatter = new SimpleDateFormat("HH.mm.ss");
-    private IAccountService accountService;
     private MessageSystem ms;
     private Address address;
 
     private Map<String, UserSession> sessionIdToUserSession = new HashMap<>();
 
-    public FrontendServlet(MessageSystem ms, IAccountService accountService) {
-        this.accountService = accountService;
-
+    public FrontendServlet(MessageSystem ms) {
         this.ms = ms;
 
         this.address = new Address();
@@ -72,7 +68,7 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
                 return;
             }
             case Locations.INDEX: {
-                indexView(request, response);
+                renderPage(response, Templates.INDEX);
                 return;
             }
             case Locations.POLL: {
@@ -80,7 +76,7 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
                 return;
             }
             case Locations.REGISTRATION: {
-                registrationView(request, response, false);
+                renderPage(response, Templates.REGISTRATION);
                 return;
             }
             default:
@@ -97,20 +93,14 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         switch (request.getPathInfo()) {
             case Locations.LOGIN: {
                 tryLogin(request, response);
-
                 return;
             }
-            case Locations.REGISTRATION: {
+            case Locations.REGISTER: {
                 tryRegister(request, response);
-
                 return;
             }
-
-            default: {
+            default:
                 response.sendRedirect(Locations.INDEX);
-
-                return;
-            }
         }
 
     }
@@ -120,6 +110,11 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
+        if (!checkCredentials(login, password, login)) {
+            response.getWriter().print("wrong");
+            return;
+        }
+
         String sessionId = request.getSession().getId();
         UserSession userSession = new UserSession(sessionId, login, ms.getAddressService());
         sessionIdToUserSession.put(sessionId, userSession);
@@ -127,7 +122,8 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         Address frontendAddress = getAddress();
         Address accountServiceAddress = userSession.getAccountService();
 
-        ms.sendMessage(new MsgGetUserId(frontendAddress, accountServiceAddress, login, password, sessionId));
+        ms.sendMessage(new MsgLoginUser(frontendAddress, accountServiceAddress,
+                login, password, sessionId));
 
         response.getWriter().print("auth started");
     }
@@ -138,19 +134,22 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         String password = request.getParameter("password");
         String email = request.getParameter("email");
 
-        Long userId = accountService.tryRegister(login, password, email);
-
-        if (userId != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("userId", userId);
-
-            response.sendRedirect(Locations.TIMER);
+        if (!checkCredentials(login, password, email)) {
+            response.getWriter().print("wrong");
             return;
         }
-        else {
-            registrationView(request, response, true);
-            return;
-        }
+
+        String sessionId = request.getSession().getId();
+        UserSession userSession = new UserSession(sessionId, login, ms.getAddressService());
+        sessionIdToUserSession.put(sessionId, userSession);
+
+        Address frontendAddress = getAddress();
+        Address accountServiceAddress = userSession.getAccountService();
+
+        ms.sendMessage(new MsgRegisterUser(frontendAddress, accountServiceAddress,
+                login, password, email, sessionId));
+
+        response.getWriter().print("registration started");
     }
 
     private void timerView(HttpServletRequest request, HttpServletResponse response)
@@ -176,7 +175,7 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
 
         HttpSession session = request.getSession();
         UserSession userSession = sessionIdToUserSession.get(session.getId());
-        String result = "";
+        String result;
 
         if (userSession == null)
             result = "error";
@@ -190,19 +189,13 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         response.getWriter().print(result);
     }
 
-    //TODO: maybe renderPage()?
-    private void indexView(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException  {
-        Map<String, Object> pageVariables = new HashMap<>();
-
-        response.getWriter().println(PageGenerator.getPage(Templates.INDEX, pageVariables));
+    private void renderPage(HttpServletResponse response, String template) throws IOException {
+        response.getWriter().println(PageGenerator.getPage(template, null));
     }
 
-    private void registrationView(HttpServletRequest request, HttpServletResponse response, boolean failed)
-            throws ServletException, IOException  {
-        Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("failed", failed);
-
-        response.getWriter().println(PageGenerator.getPage(Templates.REGISTRATION, pageVariables));
+    private boolean checkCredentials(String login, String password, String email) {
+        return login     != null && !login.isEmpty() &&
+               password  != null && !password.isEmpty() &&
+               email     != null && !email.isEmpty();
     }
 }

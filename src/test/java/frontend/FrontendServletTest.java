@@ -28,7 +28,7 @@ public class FrontendServletTest {
         accountService = mock(IAccountService.class);
 
         MessageSystem ms = new MessageSystem(); //TODO
-        frontend = new FrontendServlet(ms, accountService);
+        frontend = new FrontendServlet(ms);
 
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);

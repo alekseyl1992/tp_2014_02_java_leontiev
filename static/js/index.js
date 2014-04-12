@@ -1,23 +1,36 @@
 
 $(document).ready(function() {
-    var $loginForm = $("#login-form");
+    var $form = $("#form");
     var $wrongBlock = $('#wrong');
     var $spin = $('#spin');
     var spinner = new Spinner().spin();
     $spin.append(spinner.el);
 
-    $('#login-button').click(function() {
-        $wrongBlock.hide(100);
+    var toggleDelay = 100;
+    var pollingPeriod = 100;
 
-        $.post("/login", $loginForm.serialize())
+    $form.submit(function() {
+        $wrongBlock.hide(toggleDelay);
+
+        $.post($form.attr("action"), $form.serialize())
             .done(function(result) {
                 console.log(result);
-                $spin.show(100);
-                poll();
+                if (result == "wrong") {
+                    $spin.hide(toggleDelay);
+                    $wrongBlock.show(toggleDelay);
+                    $form.children().attr("disabled", false);
+                    return false;
+                }
+                else {
+                    $form.children().attr("disabled", true);
+                    $spin.show(toggleDelay);
+                    poll();
+                }
             })
             .fail(function() {
                 alert("Unable to reach server");
-                $spin.hide(100);
+                $spin.hide(toggleDelay);
+                $form.children().attr("disabled", false);
             });
 
         return false;
@@ -30,24 +43,27 @@ $(document).ready(function() {
 
                 switch(result) {
                     case "wait":
-                        setTimeout(poll, 100);
+                        setTimeout(poll, pollingPeriod);
                         break;
                     case "ok":
-                        $spin.hide(100);
+                        $spin.hide(toggleDelay);
+                        $form.children().attr("disabled", false);
                         window.location.href = "/timer";
                         break;
                     case "wrong":
-                        $spin.hide(100);
-                        $wrongBlock.show(100);
+                        $spin.hide(toggleDelay);
+                        $wrongBlock.show(toggleDelay);
+                        $form.children().attr("disabled", false);
                         break;
                     case "error":
-                        $spin.hide(100);
+                        $spin.hide(toggleDelay);
+                        $form.children().attr("disabled", false);
                         alert("Unexpected error");
                         break;
                 }
             })
             .fail(function() {
-                setTimeout(poll, 100);
+                setTimeout(poll, pollingPeriod);
             });
     }
 });

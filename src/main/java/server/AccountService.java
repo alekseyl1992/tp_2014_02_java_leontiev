@@ -39,32 +39,24 @@ public class AccountService implements IAccountService, Subscriber, Runnable {
         return ms;
     }
 
-    public Long getUserId(String login, String password){
+    public Long tryLogin(String login, String password){
         Sleeper.sleep(5000);
-        //TODO: should check password here
+
         UserDAO dao = new UserDAO(databaseService.getSessionFactory());
         UserDataSet user = dao.get(login);
-        if (user != null)
+        if (user != null && user.getPassword().equals(password))
             return user.getId();
         else
             return null;
     }
 
     public Long tryRegister(String login, String password, String email) {
+        Sleeper.sleep(5000);
+
         UserDAO dao = new UserDAO(databaseService.getSessionFactory());
         UserDataSet user = new UserDataSet(login, password, email);
 
         if (dao.save(user))
-            return user.getId();
-        else
-            return null;
-    }
-
-    public Long tryLogin(String login, String password) {
-        UserDAO dao = new UserDAO(databaseService.getSessionFactory());
-        UserDataSet user = dao.get(login);
-
-        if (user != null && user.getPassword().equals(password))
             return user.getId();
         else
             return null;
