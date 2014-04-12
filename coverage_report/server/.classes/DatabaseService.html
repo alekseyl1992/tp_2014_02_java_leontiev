@@ -1,0 +1,117 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: DatabaseService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">server</a> ]
+</div>
+
+<h1>Coverage Summary for Class: DatabaseService (server)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DatabaseService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/ 11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package server;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import datasets.UserDataSet;
+<i>4</i>&nbsp;import org.hibernate.SessionFactory;
+<i>5</i>&nbsp;import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+<i>6</i>&nbsp;import org.hibernate.cfg.Configuration;
+<i>7</i>&nbsp;import org.hibernate.service.ServiceRegistry;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;public abstract class DatabaseService {
+<i>10</i>&nbsp;    protected SessionFactory sessionFactory;
+<i>11</i>&nbsp;
+<b class="fc"><i>12</i>&nbsp;    public DatabaseService() throws Exception {</b>
+<b class="fc"><i>13</i>&nbsp;        Configuration configuration = new Configuration();</b>
+<b class="fc"><i>14</i>&nbsp;        configuration.addAnnotatedClass(UserDataSet.class);</b>
+<i>15</i>&nbsp;
+<b class="fc"><i>16</i>&nbsp;        configure(configuration);</b>
+<i>17</i>&nbsp;
+<b class="fc"><i>18</i>&nbsp;        sessionFactory = createSessionFactory(configuration);</b>
+<b class="fc"><i>19</i>&nbsp;    }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    public SessionFactory getSessionFactory() {
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;        return sessionFactory;</b>
+<i>24</i>&nbsp;    }
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    protected abstract void configure(Configuration configuration);
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    protected SessionFactory createSessionFactory(Configuration configuration) {
+<b class="fc"><i>29</i>&nbsp;        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();</b>
+<b class="fc"><i>30</i>&nbsp;        builder.applySettings(configuration.getProperties());</b>
+<b class="fc"><i>31</i>&nbsp;        ServiceRegistry serviceRegistry = builder.build();</b>
+<b class="fc"><i>32</i>&nbsp;        return configuration.buildSessionFactory(serviceRegistry);</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-04-13 00:49</div>
+</div>
+</body>
+</html>

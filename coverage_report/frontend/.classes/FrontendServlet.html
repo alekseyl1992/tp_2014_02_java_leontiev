@@ -1,0 +1,294 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FrontendServlet</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">frontend</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FrontendServlet (frontend)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FrontendServlet</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,3%
+  </span>
+  <span class="absValue">
+    (12/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95,7%
+  </span>
+  <span class="absValue">
+    (90/ 94)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">FrontendServlet$$EnhancerByMockitoWithCGLIB$$2d93a661</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    92,3%
+  </span>
+  <span class="absValue">
+    (12/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95,7%
+  </span>
+  <span class="absValue">
+    (90/ 94)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package frontend;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import messaging.*;
+<i>4</i>&nbsp;import server.UserSession;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import javax.servlet.ServletException;
+<i>7</i>&nbsp;import javax.servlet.http.HttpServlet;
+<i>8</i>&nbsp;import javax.servlet.http.HttpServletRequest;
+<i>9</i>&nbsp;import javax.servlet.http.HttpServletResponse;
+<i>10</i>&nbsp;import javax.servlet.http.HttpSession;
+<i>11</i>&nbsp;import java.io.IOException;
+<i>12</i>&nbsp;import java.text.DateFormat;
+<i>13</i>&nbsp;import java.text.SimpleDateFormat;
+<i>14</i>&nbsp;import java.util.Date;
+<i>15</i>&nbsp;import java.util.HashMap;
+<i>16</i>&nbsp;import java.util.Map;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;public class FrontendServlet extends HttpServlet implements Subscriber, Runnable {
+<b class="fc"><i>19</i>&nbsp;    private DateFormat formatter = new SimpleDateFormat(&quot;HH.mm.ss&quot;);</b>
+<i>20</i>&nbsp;    private MessageSystem ms;
+<i>21</i>&nbsp;    private Address address;
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;    private Map&lt;String, UserSession&gt; sessionIdToUserSession = new HashMap&lt;&gt;();</b>
+<i>24</i>&nbsp;
+<b class="fc"><i>25</i>&nbsp;    public FrontendServlet(MessageSystem ms) {</b>
+<b class="fc"><i>26</i>&nbsp;        this.ms = ms;</b>
+<i>27</i>&nbsp;
+<b class="fc"><i>28</i>&nbsp;        this.address = new Address();</b>
+<b class="fc"><i>29</i>&nbsp;        ms.addService(this);</b>
+<b class="fc"><i>30</i>&nbsp;        ms.getAddressService().setFrontendServlet(address);</b>
+<b class="fc"><i>31</i>&nbsp;    }</b>
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    @Override
+<i>34</i>&nbsp;    public void run() {
+<i>35</i>&nbsp;        while(true){
+<b class="fc"><i>36</i>&nbsp;            ms.execForSubscriber(this);</b>
+<b class="fc"><i>37</i>&nbsp;            Sleeper.sleep(Sleeper.TICK);</b>
+<i>38</i>&nbsp;        }
+<i>39</i>&nbsp;    }
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    @Override
+<i>42</i>&nbsp;    public Address getAddress() {
+<b class="fc"><i>43</i>&nbsp;        return address;</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    @Override
+<i>47</i>&nbsp;    public MessageSystem getMessageSystem() {
+<b class="nc"><i>48</i>&nbsp;        return ms;</b>
+<i>49</i>&nbsp;    }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    public void setId(String sessionId, Long userId) {
+<b class="fc"><i>52</i>&nbsp;        UserSession userSession = sessionIdToUserSession.get(sessionId);</b>
+<b class="fc"><i>53</i>&nbsp;        if (userSession == null) {</b>
+<b class="nc"><i>54</i>&nbsp;            System.out.append(&quot;Can&#39;t find user session for: &quot;).append(sessionId);</b>
+<b class="nc"><i>55</i>&nbsp;            return;</b>
+<i>56</i>&nbsp;        }
+<b class="fc"><i>57</i>&nbsp;        userSession.setUserId(userId);</b>
+<b class="fc"><i>58</i>&nbsp;    }</b>
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    public void doGet(HttpServletRequest request,
+<i>61</i>&nbsp;                      HttpServletResponse response) throws ServletException, IOException {
+<b class="fc"><i>62</i>&nbsp;        response.setContentType(&quot;text/html;charset=utf-8&quot;);</b>
+<b class="fc"><i>63</i>&nbsp;        response.setStatus(HttpServletResponse.SC_OK);</b>
+<i>64</i>&nbsp;
+<b class="fc"><i>65</i>&nbsp;        switch (request.getPathInfo()) {</b>
+<i>66</i>&nbsp;            case Locations.TIMER: {
+<b class="fc"><i>67</i>&nbsp;                timerView(request, response);</b>
+<b class="fc"><i>68</i>&nbsp;                return;</b>
+<i>69</i>&nbsp;            }
+<i>70</i>&nbsp;            case Locations.INDEX: {
+<b class="fc"><i>71</i>&nbsp;                renderPage(response, Templates.INDEX);</b>
+<b class="fc"><i>72</i>&nbsp;                return;</b>
+<i>73</i>&nbsp;            }
+<i>74</i>&nbsp;            case Locations.POLL: {
+<b class="fc"><i>75</i>&nbsp;                pollView(request, response);</b>
+<b class="fc"><i>76</i>&nbsp;                return;</b>
+<i>77</i>&nbsp;            }
+<i>78</i>&nbsp;            case Locations.REGISTRATION: {
+<b class="fc"><i>79</i>&nbsp;                renderPage(response, Templates.REGISTRATION);</b>
+<b class="fc"><i>80</i>&nbsp;                return;</b>
+<i>81</i>&nbsp;            }
+<i>82</i>&nbsp;            default:
+<b class="fc"><i>83</i>&nbsp;                response.sendRedirect(Locations.INDEX);</b>
+<i>84</i>&nbsp;        }
+<b class="fc"><i>85</i>&nbsp;    }</b>
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;    public void doPost(HttpServletRequest request,
+<i>88</i>&nbsp;                       HttpServletResponse response) throws ServletException, IOException {
+<b class="fc"><i>89</i>&nbsp;        response.setContentType(&quot;text/html;charset=utf-8&quot;);</b>
+<b class="fc"><i>90</i>&nbsp;        response.setStatus(HttpServletResponse.SC_OK);</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;
+<b class="fc"><i>93</i>&nbsp;        switch (request.getPathInfo()) {</b>
+<i>94</i>&nbsp;            case Locations.LOGIN: {
+<b class="fc"><i>95</i>&nbsp;                tryLogin(request, response);</b>
+<b class="fc"><i>96</i>&nbsp;                return;</b>
+<i>97</i>&nbsp;            }
+<i>98</i>&nbsp;            case Locations.REGISTER: {
+<b class="fc"><i>99</i>&nbsp;                tryRegister(request, response);</b>
+<b class="fc"><i>100</i>&nbsp;                return;</b>
+<i>101</i>&nbsp;            }
+<i>102</i>&nbsp;            default:
+<b class="fc"><i>103</i>&nbsp;                response.sendRedirect(Locations.INDEX);</b>
+<i>104</i>&nbsp;        }
+<i>105</i>&nbsp;
+<b class="fc"><i>106</i>&nbsp;    }</b>
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;    private void tryLogin(HttpServletRequest request,
+<i>109</i>&nbsp;                          HttpServletResponse response) throws ServletException, IOException {
+<b class="fc"><i>110</i>&nbsp;        String login = request.getParameter(&quot;login&quot;);</b>
+<b class="fc"><i>111</i>&nbsp;        String password = request.getParameter(&quot;password&quot;);</b>
+<i>112</i>&nbsp;
+<b class="fc"><i>113</i>&nbsp;        if (!checkCredentials(login, password, login)) {</b>
+<b class="fc"><i>114</i>&nbsp;            response.getWriter().print(&quot;wrong&quot;);</b>
+<b class="fc"><i>115</i>&nbsp;            return;</b>
+<i>116</i>&nbsp;        }
+<i>117</i>&nbsp;
+<b class="fc"><i>118</i>&nbsp;        String sessionId = request.getSession().getId();</b>
+<b class="fc"><i>119</i>&nbsp;        UserSession userSession = new UserSession(sessionId, login, ms.getAddressService());</b>
+<b class="fc"><i>120</i>&nbsp;        sessionIdToUserSession.put(sessionId, userSession);</b>
+<i>121</i>&nbsp;
+<b class="fc"><i>122</i>&nbsp;        Address frontendAddress = getAddress();</b>
+<b class="fc"><i>123</i>&nbsp;        Address accountServiceAddress = userSession.getAccountService();</b>
+<i>124</i>&nbsp;
+<b class="fc"><i>125</i>&nbsp;        ms.sendMessage(new MsgLoginUser(frontendAddress, accountServiceAddress,</b>
+<i>126</i>&nbsp;                login, password, sessionId));
+<i>127</i>&nbsp;
+<b class="fc"><i>128</i>&nbsp;        response.getWriter().print(&quot;auth started&quot;);</b>
+<b class="fc"><i>129</i>&nbsp;    }</b>
+<i>130</i>&nbsp;
+<i>131</i>&nbsp;    private void tryRegister(HttpServletRequest request,
+<i>132</i>&nbsp;                          HttpServletResponse response) throws ServletException, IOException {
+<b class="fc"><i>133</i>&nbsp;        String login = request.getParameter(&quot;login&quot;);</b>
+<b class="fc"><i>134</i>&nbsp;        String password = request.getParameter(&quot;password&quot;);</b>
+<b class="fc"><i>135</i>&nbsp;        String email = request.getParameter(&quot;email&quot;);</b>
+<i>136</i>&nbsp;
+<b class="fc"><i>137</i>&nbsp;        if (!checkCredentials(login, password, email)) {</b>
+<b class="fc"><i>138</i>&nbsp;            response.getWriter().print(&quot;wrong&quot;);</b>
+<b class="fc"><i>139</i>&nbsp;            return;</b>
+<i>140</i>&nbsp;        }
+<i>141</i>&nbsp;
+<b class="fc"><i>142</i>&nbsp;        String sessionId = request.getSession().getId();</b>
+<b class="fc"><i>143</i>&nbsp;        UserSession userSession = new UserSession(sessionId, login, ms.getAddressService());</b>
+<b class="fc"><i>144</i>&nbsp;        sessionIdToUserSession.put(sessionId, userSession);</b>
+<i>145</i>&nbsp;
+<b class="fc"><i>146</i>&nbsp;        Address frontendAddress = getAddress();</b>
+<b class="fc"><i>147</i>&nbsp;        Address accountServiceAddress = userSession.getAccountService();</b>
+<i>148</i>&nbsp;
+<b class="fc"><i>149</i>&nbsp;        ms.sendMessage(new MsgRegisterUser(frontendAddress, accountServiceAddress,</b>
+<i>150</i>&nbsp;                login, password, email, sessionId));
+<i>151</i>&nbsp;
+<b class="fc"><i>152</i>&nbsp;        response.getWriter().print(&quot;registration started&quot;);</b>
+<b class="fc"><i>153</i>&nbsp;    }</b>
+<i>154</i>&nbsp;
+<i>155</i>&nbsp;    private void timerView(HttpServletRequest request, HttpServletResponse response)
+<i>156</i>&nbsp;            throws ServletException, IOException  {
+<b class="fc"><i>157</i>&nbsp;        Map&lt;String, Object&gt; pageVariables = new HashMap&lt;&gt;();</b>
+<b class="fc"><i>158</i>&nbsp;        pageVariables.put(&quot;refreshPeriod&quot;, &quot;1000&quot;);</b>
+<b class="fc"><i>159</i>&nbsp;        pageVariables.put(&quot;serverTime&quot;, formatter.format(new Date()));</b>
+<i>160</i>&nbsp;
+<b class="fc"><i>161</i>&nbsp;        HttpSession session = request.getSession();</b>
+<b class="fc"><i>162</i>&nbsp;        UserSession userSession = sessionIdToUserSession.get(session.getId());</b>
+<b class="fc"><i>163</i>&nbsp;        if (userSession == null) {</b>
+<b class="fc"><i>164</i>&nbsp;            response.sendRedirect(Locations.INDEX);</b>
+<i>165</i>&nbsp;        }
+<i>166</i>&nbsp;        else {
+<b class="fc"><i>167</i>&nbsp;            pageVariables.put(&quot;login&quot;, userSession.getLogin());</b>
+<b class="fc"><i>168</i>&nbsp;            pageVariables.put(&quot;id&quot;, userSession.getUserId());</b>
+<b class="fc"><i>169</i>&nbsp;            response.getWriter().println(PageGenerator.getPage(Templates.TIMER, pageVariables));</b>
+<i>170</i>&nbsp;        }
+<b class="fc"><i>171</i>&nbsp;   }</b>
+<i>172</i>&nbsp;
+<i>173</i>&nbsp;    private void pollView(HttpServletRequest request, HttpServletResponse response)
+<i>174</i>&nbsp;            throws ServletException, IOException  {
+<i>175</i>&nbsp;
+<b class="fc"><i>176</i>&nbsp;        HttpSession session = request.getSession();</b>
+<b class="fc"><i>177</i>&nbsp;        UserSession userSession = sessionIdToUserSession.get(session.getId());</b>
+<i>178</i>&nbsp;        String result;
+<i>179</i>&nbsp;
+<b class="fc"><i>180</i>&nbsp;        if (userSession == null)</b>
+<b class="nc"><i>181</i>&nbsp;            result = &quot;error&quot;;</b>
+<b class="fc"><i>182</i>&nbsp;        else if (userSession.isWrong())</b>
+<b class="fc"><i>183</i>&nbsp;            result = &quot;wrong&quot;;</b>
+<b class="fc"><i>184</i>&nbsp;        else if (userSession.getUserId() == null)</b>
+<b class="fc"><i>185</i>&nbsp;            result = &quot;wait&quot;;</b>
+<i>186</i>&nbsp;        else
+<b class="fc"><i>187</i>&nbsp;            result = &quot;ok&quot;;</b>
+<i>188</i>&nbsp;
+<b class="fc"><i>189</i>&nbsp;        response.getWriter().print(result);</b>
+<b class="fc"><i>190</i>&nbsp;    }</b>
+<i>191</i>&nbsp;
+<i>192</i>&nbsp;    private void renderPage(HttpServletResponse response, String template) throws IOException {
+<b class="fc"><i>193</i>&nbsp;        response.getWriter().println(PageGenerator.getPage(template, null));</b>
+<b class="fc"><i>194</i>&nbsp;    }</b>
+<i>195</i>&nbsp;
+<i>196</i>&nbsp;    private boolean checkCredentials(String login, String password, String email) {
+<b class="fc"><i>197</i>&nbsp;        return login     != null &amp;&amp; !login.isEmpty() &amp;&amp;</b>
+<b class="fc"><i>198</i>&nbsp;               password  != null &amp;&amp; !password.isEmpty() &amp;&amp;</b>
+<b class="fc"><i>199</i>&nbsp;               email     != null &amp;&amp; !email.isEmpty();</b>
+<i>200</i>&nbsp;    }
+<i>201</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-04-13 00:49</div>
+</div>
+</body>
+</html>

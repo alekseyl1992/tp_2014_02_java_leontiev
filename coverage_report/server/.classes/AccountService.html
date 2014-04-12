@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AccountService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">server</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AccountService (server)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AccountService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96,4%
+  </span>
+  <span class="absValue">
+    (27/ 28)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AccountService$$EnhancerByMockitoWithCGLIB$$47cc9d9d</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96,4%
+  </span>
+  <span class="absValue">
+    (27/ 28)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package server;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import dao.UserDAO;
+<i>4</i>&nbsp;import datasets.UserDataSet;
+<i>5</i>&nbsp;import messaging.Address;
+<i>6</i>&nbsp;import messaging.MessageSystem;
+<i>7</i>&nbsp;import messaging.Sleeper;
+<i>8</i>&nbsp;import messaging.Subscriber;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public class AccountService implements IAccountService, Subscriber, Runnable {
+<i>11</i>&nbsp;    private DatabaseService databaseService;
+<i>12</i>&nbsp;    private MessageSystem ms;
+<i>13</i>&nbsp;    private Address address;
+<i>14</i>&nbsp;
+<b class="fc"><i>15</i>&nbsp;    public AccountService(MessageSystem ms, DatabaseService databaseService) {</b>
+<b class="fc"><i>16</i>&nbsp;        this.ms = ms;</b>
+<b class="fc"><i>17</i>&nbsp;        this.databaseService = databaseService;</b>
+<i>18</i>&nbsp;
+<b class="fc"><i>19</i>&nbsp;        this.address = new Address();</b>
+<b class="fc"><i>20</i>&nbsp;        ms.addService(this);</b>
+<b class="fc"><i>21</i>&nbsp;        ms.getAddressService().setAccountService(address);</b>
+<b class="fc"><i>22</i>&nbsp;    }</b>
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    @Override
+<i>25</i>&nbsp;    public void run() {
+<i>26</i>&nbsp;        while(true){
+<b class="fc"><i>27</i>&nbsp;            ms.execForSubscriber(this);</b>
+<b class="fc"><i>28</i>&nbsp;            Sleeper.sleep(Sleeper.TICK);</b>
+<i>29</i>&nbsp;        }
+<i>30</i>&nbsp;    }
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    @Override
+<i>33</i>&nbsp;    public Address getAddress() {
+<b class="fc"><i>34</i>&nbsp;        return address;</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    @Override
+<i>38</i>&nbsp;    public MessageSystem getMessageSystem() {
+<b class="fc"><i>39</i>&nbsp;        return ms;</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    public Long tryLogin(String login, String password){
+<b class="fc"><i>43</i>&nbsp;        Sleeper.sleep(5000);</b>
+<i>44</i>&nbsp;
+<b class="fc"><i>45</i>&nbsp;        UserDAO dao = new UserDAO(databaseService.getSessionFactory());</b>
+<b class="fc"><i>46</i>&nbsp;        UserDataSet user = dao.get(login);</b>
+<b class="fc"><i>47</i>&nbsp;        if (user != null &amp;&amp; user.getPassword().equals(password))</b>
+<b class="fc"><i>48</i>&nbsp;            return user.getId();</b>
+<i>49</i>&nbsp;        else
+<b class="fc"><i>50</i>&nbsp;            return null;</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    public Long tryRegister(String login, String password, String email) {
+<b class="fc"><i>54</i>&nbsp;        Sleeper.sleep(5000);</b>
+<i>55</i>&nbsp;
+<b class="fc"><i>56</i>&nbsp;        UserDAO dao = new UserDAO(databaseService.getSessionFactory());</b>
+<b class="fc"><i>57</i>&nbsp;        UserDataSet user = new UserDataSet(login, password, email);</b>
+<i>58</i>&nbsp;
+<b class="fc"><i>59</i>&nbsp;        if (dao.save(user))</b>
+<b class="fc"><i>60</i>&nbsp;            return user.getId();</b>
+<i>61</i>&nbsp;        else
+<b class="fc"><i>62</i>&nbsp;            return null;</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    public UserDataSet getUser(Long userId) {
+<b class="fc"><i>66</i>&nbsp;        if (userId == null)</b>
+<b class="nc"><i>67</i>&nbsp;            return null;</b>
+<i>68</i>&nbsp;
+<b class="fc"><i>69</i>&nbsp;        UserDAO dao = new UserDAO(databaseService.getSessionFactory());</b>
+<b class="fc"><i>70</i>&nbsp;        return dao.get(userId);</b>
+<i>71</i>&nbsp;    }
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    public boolean exists(Long userId) {
+<b class="fc"><i>74</i>&nbsp;        return getUser(userId) != null;</b>
+<i>75</i>&nbsp;    }
+<i>76</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-04-13 00:49</div>
+</div>
+</body>
+</html>
