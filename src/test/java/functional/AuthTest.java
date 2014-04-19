@@ -5,10 +5,7 @@ import messaging.MessageSystem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import server.AccountService;
@@ -118,8 +115,15 @@ public class AuthTest {
                     .until((WebDriver d) -> {
                         WebElement el;
                         try {
-                            el = d.findElement(By.id("login"));
-                            return el.getText().contains(login);
+                            for (;;) {
+                                try {
+                                    el = d.findElement(By.id("login"));
+                                    return el.getText().contains(login);
+                                }
+                                catch(StaleElementReferenceException ignored) {
+
+                                }
+                            }
                         } catch (NoSuchElementException e) {
                             return false;
                         }

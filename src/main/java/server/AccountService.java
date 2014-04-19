@@ -51,7 +51,7 @@ public class AccountService implements IAccountService, Subscriber, Runnable {
     }
 
     public Long tryRegister(String login, String password, String email) {
-        Sleeper.sleep(5000);
+        //Sleeper.sleep(5000);
 
         UserDAO dao = new UserDAO(databaseService.getSessionFactory());
         UserDataSet user = new UserDataSet(login, password, email);
