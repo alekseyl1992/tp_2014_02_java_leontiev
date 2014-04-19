@@ -113,10 +113,8 @@ public class AuthTest {
         try {
             (new WebDriverWait(driver, 10))
                     .until((WebDriver d) -> {
-                        WebElement el;
                         try {
-                            el = d.findElement(By.id("login"));
-                            return el.getText().contains(login);
+                            return testElementValue(d, "login", login);
                         } catch (NoSuchElementException e) {
                             return false;
                         }
@@ -128,5 +126,17 @@ public class AuthTest {
 
         driver.quit();
         return result;
+    }
+
+    private boolean testElementValue(WebDriver d, String element, String value) {
+        while (true) {
+            try {
+                WebElement el = d.findElement(By.id(element));
+                return el.getText().contains(value);
+            }
+            catch(StaleElementReferenceException ignore) {
+
+            }
+        }
     }
 }
