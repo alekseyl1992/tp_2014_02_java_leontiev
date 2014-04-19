@@ -115,15 +115,8 @@ public class AuthTest {
                     .until((WebDriver d) -> {
                         WebElement el;
                         try {
-                            for (;;) {
-                                try {
-                                    el = d.findElement(By.id("login"));
-                                    return el.getText().contains(login);
-                                }
-                                catch(StaleElementReferenceException ignored) {
-
-                                }
-                            }
+                            el = d.findElement(By.id("login"));
+                            return el.getText().contains(login);
                         } catch (NoSuchElementException e) {
                             return false;
                         }
