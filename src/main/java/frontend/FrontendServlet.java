@@ -57,6 +57,15 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         userSession.setUserId(userId);
     }
 
+    public void setError(String sessionId) {
+        UserSession userSession = sessionIdToUserSession.get(sessionId);
+        if (userSession == null) {
+            System.out.append("Can't find user session for: ").append(sessionId);
+            return;
+        }
+        userSession.setError(true);
+    }
+
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=utf-8");
@@ -177,14 +186,14 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         UserSession userSession = sessionIdToUserSession.get(session.getId());
         String result;
 
-        if (userSession == null)
+        if (userSession == null || userSession.isError())
             result = "error";
         else if (userSession.isWrong())
             result = "wrong";
-        else if (userSession.getUserId() == null)
-            result = "wait";
-        else
+        else if (userSession.isAuthorized())
             result = "ok";
+        else
+            result = "wait";
 
         response.getWriter().print(result);
     }

@@ -3,6 +3,9 @@ package dao;
 import datasets.UserDataSet;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.exception.ConstraintViolationException;
+import server.AutoSession;
+import server.DBException;
 
 public class UserDAO {
     private SessionFactory sessionFactory;
@@ -11,39 +14,55 @@ public class UserDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    public boolean save(UserDataSet dataSet) {
-        Session session = sessionFactory.openSession();
+    public boolean save(UserDataSet dataSet) throws DBException {
         Transaction trx = null;
-        try {
+
+        try (AutoSession session = new AutoSession(sessionFactory.openSession())) {
             trx = session.beginTransaction();
             session.save(dataSet);
             trx.commit();
             return true;
         }
-        catch(HibernateException ex) {
-            trx.rollback();
+        catch (ConstraintViolationException e) {
+            try {
+                if (trx != null)
+                    trx.rollback();
+            }
+            catch (TransactionException ignore) {}
+
             return false;
         }
-        finally {
-            session.close();
+        catch (HibernateException e) {
+            try {
+                if (trx != null)
+                    trx.rollback();
+            }
+            catch (TransactionException ignore) {}
+
+            throw new DBException(e);
         }
     }
 
-    public UserDataSet get(long id) {
-        Session session = sessionFactory.openSession();
-        UserDataSet user = (UserDataSet) session.get(UserDataSet.class, id);;
-        session.close();
-
-        return user;
+    public UserDataSet get(long id) throws DBException {
+        try (AutoSession session = new AutoSession(sessionFactory.openSession())) {
+            return (UserDataSet) session.get(UserDataSet.class, id);
+        }
+        catch (HibernateException e) {
+            throw new DBException(e);
+        }
     }
 
-    public UserDataSet get(String login) {
-        Session session = sessionFactory.openSession();
-        Criteria criteria = session.createCriteria(UserDataSet.class);
-        UserDataSet user = (UserDataSet) criteria.add(
-                Restrictions.eq("login", login)).uniqueResult();
-        session.close();
+    public UserDataSet get(String login) throws DBException {
+        try (AutoSession session = new AutoSession(sessionFactory.openSession())) {
+            Criteria criteria = session.createCriteria(UserDataSet.class);
+            UserDataSet user = (UserDataSet) criteria.add(
+                    Restrictions.eq("login", login))
+                    .uniqueResult();
 
-        return user;
+            return user;
+        }
+        catch (HibernateException e) {
+            throw new DBException(e);
+        }
     }
 }

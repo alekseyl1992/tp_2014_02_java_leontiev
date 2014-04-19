@@ -39,7 +39,7 @@ public class AccountService implements IAccountService, Subscriber, Runnable {
         return ms;
     }
 
-    public Long tryLogin(String login, String password){
+    public Long tryLogin(String login, String password) throws DBException {
         UserDAO dao = new UserDAO(databaseService.getSessionFactory());
         UserDataSet user = dao.get(login);
         if (user != null && user.getPassword().equals(password))
@@ -48,7 +48,7 @@ public class AccountService implements IAccountService, Subscriber, Runnable {
             return null;
     }
 
-    public Long tryRegister(String login, String password, String email) {
+    public Long tryRegister(String login, String password, String email) throws DBException {
         UserDAO dao = new UserDAO(databaseService.getSessionFactory());
         UserDataSet user = new UserDataSet(login, password, email);
 
@@ -58,7 +58,7 @@ public class AccountService implements IAccountService, Subscriber, Runnable {
             return null;
     }
 
-    public UserDataSet getUser(Long userId) {
+    public UserDataSet getUser(Long userId) throws DBException {
         if (userId == null)
             return null;
 
@@ -66,7 +66,7 @@ public class AccountService implements IAccountService, Subscriber, Runnable {
         return dao.get(userId);
     }
 
-    public boolean exists(Long userId) {
+    public boolean exists(Long userId) throws DBException {
         return getUser(userId) != null;
     }
 }

@@ -58,7 +58,7 @@ $(document).ready(function() {
                     case "error":
                         $spin.hide(toggleDelay);
                         $form.children().attr("disabled", false);
-                        alert("Unexpected error");
+                        alert("Unable to get data from database");
                         break;
                 }
             })

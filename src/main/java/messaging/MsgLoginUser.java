@@ -1,6 +1,7 @@
 package messaging;
 
 import server.AccountService;
+import server.DBException;
 
 public class MsgLoginUser extends MsgToAS {
 	private String login;
@@ -15,7 +16,14 @@ public class MsgLoginUser extends MsgToAS {
 	}
 
 	void exec(AccountService accountService) {
-		Long id = accountService.tryLogin(login, password);
-		accountService.getMessageSystem().sendMessage(new MsgUpdateUserId(getTo(), getFrom(), sessionId, id));
+        try {
+            Long id = accountService.tryLogin(login, password);
+            accountService.getMessageSystem()
+                    .sendMessage(new MsgUpdateUserId(getTo(), getFrom(), sessionId, id));
+        }
+        catch (DBException e) {
+            accountService.getMessageSystem()
+                    .sendMessage(new MsgDBError(getTo(), getFrom(), sessionId));
+        }
 	}
 }

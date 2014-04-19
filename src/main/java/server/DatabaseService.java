@@ -19,7 +19,6 @@ public abstract class DatabaseService {
     }
 
     public SessionFactory getSessionFactory() {
-
         return sessionFactory;
     }
 

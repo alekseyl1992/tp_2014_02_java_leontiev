@@ -10,6 +10,7 @@ public class UserSession {
     private String sessionId;
     private Long userId;
     private boolean isWrong = false;
+    private boolean isError = false;
 
     public UserSession(String sessionId, String name, AddressService addressService) {
         this.sessionId = sessionId;
@@ -36,10 +37,23 @@ public class UserSession {
     public void setUserId(Long userId) {
         if (userId == null)
             isWrong = true;
+
         this.userId = userId;
     }
 
     public boolean isWrong() {
         return isWrong;
+    }
+
+    public boolean isError() {
+        return isError;
+    }
+
+    public void setError(boolean isError) {
+        this.isError = isError;
+    }
+
+    public boolean isAuthorized() {
+        return !isWrong() && !isError() && getUserId() != null;
     }
 }
