@@ -23,7 +23,7 @@ public class AccountService implements IAccountService, Subscriber, Runnable {
 
     @Override
     public void run() {
-        while(true){
+        while(!Thread.currentThread().isInterrupted()){
             ms.execForSubscriber(this);
             Sleeper.sleep(Sleeper.TICK);
         }

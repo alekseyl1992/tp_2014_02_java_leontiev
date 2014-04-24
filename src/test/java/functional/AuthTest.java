@@ -108,7 +108,7 @@ public class AuthTest {
     }
 
     public boolean testAuth(WebDriver driver, String login) {
-        boolean result = false;
+        boolean result;
 
         try {
             (new WebDriverWait(driver, 10))
@@ -134,9 +134,7 @@ public class AuthTest {
                 WebElement el = d.findElement(By.id(element));
                 return el.getText().contains(value);
             }
-            catch(StaleElementReferenceException ignore) {
-
-            }
+            catch(StaleElementReferenceException ignore) { }
         }
     }
 }

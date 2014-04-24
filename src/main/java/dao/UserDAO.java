@@ -55,11 +55,9 @@ public class UserDAO {
     public UserDataSet get(String login) throws DBException {
         try (AutoSession session = new AutoSession(sessionFactory.openSession())) {
             Criteria criteria = session.createCriteria(UserDataSet.class);
-            UserDataSet user = (UserDataSet) criteria.add(
-                    Restrictions.eq("login", login))
-                    .uniqueResult();
 
-            return user;
+            return (UserDataSet) criteria.add(Restrictions.eq("login", login))
+                    .uniqueResult();
         }
         catch (HibernateException e) {
             throw new DBException(e);
