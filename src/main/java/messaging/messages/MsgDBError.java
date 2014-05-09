@@ -1,5 +1,6 @@
-package messaging;
+package messaging.messages;
 import frontend.FrontendServlet;
+import messaging.Address;
 
 public class MsgDBError extends MsgToFS {
 	private String sessionId;

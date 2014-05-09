@@ -1,9 +1,6 @@
-package resources;
+package resourcing;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
 
 public interface VFS {
     boolean isExist(String path);
@@ -11,5 +8,5 @@ public interface VFS {
     String getAbsolutePath(String file);
     byte[] getBytes(String file) throws IOException;
     String getUTF8Text(String file) throws IOException;
-    Iterator<String> getIterator(String startDir);
+    Iterable<String> iterate(String startDir);
 }

@@ -1,4 +1,4 @@
-package resources;
+package resourcing;
 
 import java.io.File;
 import java.util.Collections;
@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class VFSIterator implements Iterator<String> {
+public class VFSIterator implements Iterator<String>, Iterable<String> {
     private Queue<File> files = new LinkedList<>();
 
     public VFSIterator(String path){
@@ -32,5 +32,10 @@ public class VFSIterator implements Iterator<String> {
 
     @Override
     public void remove() {
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return this;
     }
 }

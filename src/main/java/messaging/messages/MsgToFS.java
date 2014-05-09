@@ -1,5 +1,7 @@
-package messaging;
+package messaging.messages;
 import frontend.FrontendServlet;
+import messaging.Address;
+import messaging.Subscriber;
 
 public abstract class MsgToFS extends Msg {
 

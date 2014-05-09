@@ -1,6 +1,11 @@
 package frontend;
 
-import messaging.*;
+import messaging.Address;
+import messaging.MessageSystem;
+import messaging.Sleeper;
+import messaging.Subscriber;
+import messaging.messages.MsgLoginUser;
+import messaging.messages.MsgRegisterUser;
 import server.UserSession;
 
 import javax.servlet.ServletException;
@@ -14,11 +19,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class FrontendServlet extends HttpServlet implements Subscriber, Runnable {
     private DateFormat formatter = new SimpleDateFormat("HH.mm.ss");
     private MessageSystem ms;
     private Address address;
+    private Map<String, BiConsumer<HttpServletRequest, HttpServletResponse>> getRouter = new HashMap<>();
+    private Map<String, BiConsumer<HttpServletRequest, HttpServletResponse>> postRouter = new HashMap<>();
 
     private Map<String, UserSession> sessionIdToUserSession = new HashMap<>();
 
@@ -28,6 +36,15 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         this.address = new Address();
         ms.addService(this);
         ms.getAddressService().setFrontendServlet(address);
+
+        //TODO
+        getRouter.put(Locations.TIMER, this::timerView);
+        getRouter.put(Locations.INDEX, this::indexView);
+        getRouter.put(Locations.POLL, this::pollView);
+        getRouter.put(Locations.REGISTRATION, this::registrationView);
+
+        postRouter.put(Locations.LOGIN, this::tryLogin);
+        postRouter.put(Locations.REGISTER, this::tryRegister);
     }
 
     @Override
@@ -71,26 +88,12 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
-        switch (request.getPathInfo()) {
-            case Locations.TIMER: {
-                timerView(request, response);
-                return;
-            }
-            case Locations.INDEX: {
-                renderPage(response, Templates.INDEX);
-                return;
-            }
-            case Locations.POLL: {
-                pollView(request, response);
-                return;
-            }
-            case Locations.REGISTRATION: {
-                renderPage(response, Templates.REGISTRATION);
-                return;
-            }
-            default:
-                response.sendRedirect(Locations.INDEX);
-        }
+        BiConsumer<HttpServletRequest, HttpServletResponse> view = getRouter.get(request.getPathInfo());
+
+        if (view != null)
+            view.accept(request, response);
+        else
+            response.sendRedirect(Locations.INDEX);
     }
 
     public void doPost(HttpServletRequest request,
@@ -98,20 +101,12 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
+        BiConsumer<HttpServletRequest, HttpServletResponse> view = postRouter.get(request.getPathInfo());
 
-        switch (request.getPathInfo()) {
-            case Locations.LOGIN: {
-                tryLogin(request, response);
-                return;
-            }
-            case Locations.REGISTER: {
-                tryRegister(request, response);
-                return;
-            }
-            default:
-                response.sendRedirect(Locations.INDEX);
-        }
-
+        if (view != null)
+            view.accept(request, response);
+        else
+            response.sendRedirect(Locations.INDEX);
     }
 
     private void tryLogin(HttpServletRequest request,
@@ -196,6 +191,16 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
             result = "wait";
 
         response.getWriter().print(result);
+    }
+
+    private void indexView(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException  {
+        renderPage(response, Templates.INDEX);
+    }
+
+    private void registrationView(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException  {
+        renderPage(response, Templates.REGISTRATION);
     }
 
     private void renderPage(HttpServletResponse response, String template) throws IOException {

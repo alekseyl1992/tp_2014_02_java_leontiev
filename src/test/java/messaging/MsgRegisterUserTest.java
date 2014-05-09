@@ -1,5 +1,6 @@
 package messaging;
 
+import messaging.messages.MsgRegisterUser;
 import org.junit.Before;
 import org.junit.Test;
 import server.AccountService;

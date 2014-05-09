@@ -1,5 +1,6 @@
 package messaging;
 
+import messaging.messages.Msg;
 import org.junit.Before;
 import org.junit.Test;
 

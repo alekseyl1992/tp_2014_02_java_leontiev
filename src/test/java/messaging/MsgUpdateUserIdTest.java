@@ -1,6 +1,7 @@
 package messaging;
 
 import frontend.FrontendServlet;
+import messaging.messages.MsgUpdateUserId;
 import org.junit.Before;
 import org.junit.Test;
 

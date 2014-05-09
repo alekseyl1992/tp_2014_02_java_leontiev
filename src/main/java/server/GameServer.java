@@ -10,6 +10,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import resourcing.ResourceSystem;
 
 public class GameServer {
     Server server;
@@ -20,8 +21,10 @@ public class GameServer {
         IAccountService accountService = new AccountService(ms, db);
         FrontendServlet frontendServlet = new FrontendServlet(ms);
 
-        (new Thread(frontendServlet)).start();
-        (new Thread(accountService)).start();
+        ResourceSystem rs = ResourceSystem.getInstance();
+
+        new Thread(frontendServlet).start();
+        new Thread(accountService).start();
 
         server = new Server(port);
 

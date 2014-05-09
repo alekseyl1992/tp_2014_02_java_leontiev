@@ -1,4 +1,7 @@
-package messaging;
+package messaging.messages;
+
+import messaging.Address;
+import messaging.Subscriber;
 
 public abstract class Msg {
 	private Address from;
@@ -9,13 +12,13 @@ public abstract class Msg {
 		this.to = to;
 	}
 	
-	protected Address getFrom(){
+	public Address getFrom(){
 		return from;
 	}
 	
-	protected Address getTo(){
+	public Address getTo(){
 		return to;
 	}
 	
-	abstract void exec(Subscriber subscriber);
+	public abstract void exec(Subscriber subscriber);
 }

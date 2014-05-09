@@ -1,5 +1,7 @@
 package messaging;
 
+import messaging.messages.Msg;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;

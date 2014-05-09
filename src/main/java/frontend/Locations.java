@@ -1,6 +1,9 @@
 package frontend;
 
-public class Locations {
+import resourcing.resources.Resource;
+import java.io.Serializable;
+
+public class Locations implements Resource, Serializable {
     public static final String INDEX = "/index";
     public static final String LOGIN = "/login";
     public static final String REGISTER = "/register";

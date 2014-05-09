@@ -1,4 +1,6 @@
-package messaging;
+package messaging.messages;
+import messaging.Address;
+import messaging.Subscriber;
 import server.AccountService;
 
 public abstract class MsgToAS extends Msg {
@@ -7,11 +9,11 @@ public abstract class MsgToAS extends Msg {
 		super(from, to);		
 	}
 
-	void exec(Subscriber subscriber) {
+	public void exec(Subscriber subscriber) {
 		if(subscriber instanceof AccountService){
 			exec((AccountService) subscriber);
 		}
 	}
 
-	abstract void exec(AccountService accountService);
+	public abstract void exec(AccountService accountService);
 }

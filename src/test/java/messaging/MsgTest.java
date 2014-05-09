@@ -1,5 +1,6 @@
 package messaging;
 
+import messaging.messages.Msg;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
@@ -15,7 +16,7 @@ public class MsgTest {
 
         msg = new Msg(from, to) {
             @Override
-            void exec(Subscriber subscriber) {}
+            public void exec(Subscriber subscriber) {}
         };
     }
 

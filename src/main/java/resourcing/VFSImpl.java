@@ -1,9 +1,8 @@
-package resources;
+package resourcing;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
 
 public class VFSImpl implements VFS {
     private String root;
@@ -24,7 +23,10 @@ public class VFSImpl implements VFS {
 
     @Override
     public String getAbsolutePath(String file) {
-        return Paths.get(root, file).toString();
+        if (Paths.get(file).isAbsolute())
+            return file;
+        else
+            return Paths.get(root, file).toAbsolutePath().toString();
     }
 
     @Override
@@ -56,7 +58,7 @@ public class VFSImpl implements VFS {
     }
 
     @Override
-    public Iterator<String> getIterator(String startDir) {
+    public Iterable<String> iterate(String startDir) {
         return new VFSIterator(startDir);
     }
 }
