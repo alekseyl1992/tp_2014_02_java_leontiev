@@ -25,11 +25,12 @@ public class AuthTest {
 
     String testLoginStr = "testLoginStr";
     String testRegisterStr = "testRegisterStr";
+    String port = "8081";
 
     @Before
     public void setUp() throws Exception {
         ResourceSystem rs = ResourceSystem.getInstance();
-        DatabaseService service = new DatabaseService(rs.getConfig("mysql"));
+        DatabaseService service = new DatabaseService(rs.getConfig("h2"));
 
         MessageSystem ms = mock(MessageSystem.class);
         AddressService as = mock(AddressService.class);
@@ -38,7 +39,8 @@ public class AuthTest {
         accountService = new AccountService(ms, service);
         accountService.tryRegister(testLoginStr, testLoginStr, testLoginStr);
 
-        server = new GameServer(8081, service);
+        port = rs.getConfig("server").get("port");
+        server = new GameServer(Integer.parseInt(port), service);
         gameThread = new Thread(() -> {
                 try {
                     server.start();
@@ -80,7 +82,7 @@ public class AuthTest {
 
     public boolean testLogin(final String login) throws Exception {
         WebDriver driver = new FirefoxDriver();
-        driver.get("http://127.0.0.1:8081/index");
+        driver.get("http://127.0.0.1:" + port + "/index");
 
         WebElement loginField = driver.findElement(By.name("login"));
         loginField.sendKeys(login);
@@ -94,7 +96,7 @@ public class AuthTest {
 
     public boolean testRegister(final String login) throws Exception {
         WebDriver driver = new FirefoxDriver();
-        driver.get("http://127.0.0.1:8081/registration");
+        driver.get("http://127.0.0.1:" + port + "/registration");
 
         WebElement loginField = driver.findElement(By.name("login"));
         loginField.sendKeys(login);
