@@ -1,6 +1,6 @@
 package frontend;
 
-import resourcing.resources.Resource;
+import resourcing.Resource;
 import java.io.Serializable;
 
 public class Templates  implements Resource, Serializable {

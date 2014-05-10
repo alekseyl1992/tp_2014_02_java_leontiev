@@ -1,7 +1,5 @@
 package resourcing;
 
-import resourcing.resources.Resource;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +26,7 @@ public class ResourceSystem {
     }
 
     public Resource getResource(String fileName) {
-        return resources.get(fileName);
+        return resources.get(fileName + ".xml");
     }
 
     public Map<String, String> getConfig(String fileName) {
@@ -43,7 +41,7 @@ public class ResourceSystem {
             if (!vfs.isDirectory(fileName)) {
                 try {
                     Resource resource = SaxParser.parse(vfs.getUTF8Text(fileName));
-                    resources.put(fileName, resource);
+                    resources.put(vfs.getFileName(fileName), resource);
                 } catch (ParserException | IOException e) {
                     System.err.println("Unable to load resource: " + fileName);
                     e.printStackTrace();

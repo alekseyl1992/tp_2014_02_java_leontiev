@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class VFSIteratorTest {
+public class ReflectionHelperTest {
 
     @Before
     public void setUp() throws Exception {
@@ -17,17 +17,12 @@ public class VFSIteratorTest {
     }
 
     @Test
-    public void testHasNext() throws Exception {
+    public void testCreateInstance() throws Exception {
 
     }
 
     @Test
-    public void testNext() throws Exception {
-
-    }
-
-    @Test
-    public void testRemove() throws Exception {
+    public void testSetFieldValue() throws Exception {
 
     }
 }

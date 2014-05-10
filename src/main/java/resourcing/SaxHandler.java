@@ -3,7 +3,6 @@ package resourcing;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import resourcing.resources.Resource;
 
 public class SaxHandler extends DefaultHandler {
 	private static String CLASSNAME = "class";

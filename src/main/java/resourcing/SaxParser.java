@@ -1,7 +1,5 @@
 package resourcing;
 
-import resourcing.resources.Resource;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.ByteArrayInputStream;

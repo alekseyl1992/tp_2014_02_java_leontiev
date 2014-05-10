@@ -1,4 +1,4 @@
-package resourcing.resources;
+package resourcing;
 
 public interface Resource {
 }
