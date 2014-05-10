@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import static utils.LambdaUtils.wrapToRTE;
 
 public class FrontendServlet extends HttpServlet implements Subscriber, Runnable {
     private DateFormat formatter = new SimpleDateFormat("HH.mm.ss");
@@ -37,14 +38,13 @@ public class FrontendServlet extends HttpServlet implements Subscriber, Runnable
         ms.addService(this);
         ms.getAddressService().setFrontendServlet(address);
 
-        //TODO
-        getRouter.put(Locations.TIMER, this::timerView);
-        getRouter.put(Locations.INDEX, this::indexView);
-        getRouter.put(Locations.POLL, this::pollView);
-        getRouter.put(Locations.REGISTRATION, this::registrationView);
+        getRouter.put(Locations.TIMER, wrapToRTE(this::timerView));
+        getRouter.put(Locations.INDEX, wrapToRTE(this::indexView));
+        getRouter.put(Locations.POLL, wrapToRTE(this::pollView));
+        getRouter.put(Locations.REGISTRATION, wrapToRTE(this::registrationView));
 
-        postRouter.put(Locations.LOGIN, this::tryLogin);
-        postRouter.put(Locations.REGISTER, this::tryRegister);
+        postRouter.put(Locations.LOGIN, wrapToRTE(this::tryLogin));
+        postRouter.put(Locations.REGISTER, wrapToRTE(this::tryRegister));
     }
 
     @Override
