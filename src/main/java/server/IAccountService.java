@@ -1,6 +1,7 @@
 package server;
 
-import datasets.UserDataSet;
+import database.DBException;
+import database.datasets.UserDataSet;
 import messaging.Subscriber;
 
 public interface IAccountService extends Subscriber, Runnable {

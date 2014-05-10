@@ -1,19 +1,22 @@
-package server;
+package database;
 
-import datasets.UserDataSet;
+import database.datasets.UserDataSet;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-public abstract class DatabaseService {
+import java.util.Map;
+
+public class DatabaseService {
     protected SessionFactory sessionFactory;
 
-    public DatabaseService() throws Exception {
+    public DatabaseService(Map<String, String> config) throws Exception {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(UserDataSet.class);
 
-        configure(configuration);
+        for (Map.Entry<String, String> entry: config.entrySet())
+            configuration.setProperty(entry.getKey(), entry.getValue());
 
         sessionFactory = createSessionFactory(configuration);
     }
@@ -21,8 +24,6 @@ public abstract class DatabaseService {
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
-
-    protected abstract void configure(Configuration configuration);
 
     protected SessionFactory createSessionFactory(Configuration configuration) {
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();

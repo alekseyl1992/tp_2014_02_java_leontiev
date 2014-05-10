@@ -1,10 +1,12 @@
 package server;
 
+import database.DatabaseService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
+import resourcing.ResourceSystem;
 
 import static org.junit.Assert.*;
 
@@ -16,7 +18,10 @@ public class GameServerTest {
 
     @Before
     public void setUp() throws Exception {
-        server = new GameServer(8081, new H2DatabaseService());
+        ResourceSystem rs = ResourceSystem.getInstance();
+        String port = rs.getConfig("server").get("port");
+
+        server = new GameServer(Integer.parseInt(port), new DatabaseService(rs.getConfig("h2")));
     }
 
     @After

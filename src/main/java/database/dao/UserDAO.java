@@ -1,11 +1,11 @@
-package dao;
+package database.dao;
 
-import datasets.UserDataSet;
+import database.datasets.UserDataSet;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 import server.AutoSession;
-import server.DBException;
+import database.DBException;
 
 public class UserDAO {
     private SessionFactory sessionFactory;

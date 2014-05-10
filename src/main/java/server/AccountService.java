@@ -1,7 +1,9 @@
 package server;
 
-import dao.UserDAO;
-import datasets.UserDataSet;
+import database.DBException;
+import database.DatabaseService;
+import database.dao.UserDAO;
+import database.datasets.UserDataSet;
 import messaging.Address;
 import messaging.MessageSystem;
 import messaging.Sleeper;

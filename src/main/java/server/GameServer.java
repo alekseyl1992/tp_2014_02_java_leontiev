@@ -1,5 +1,6 @@
 package server;
 
+import database.DatabaseService;
 import frontend.FrontendServlet;
 import messaging.MessageSystem;
 import org.eclipse.jetty.rewrite.handler.RedirectRegexRule;

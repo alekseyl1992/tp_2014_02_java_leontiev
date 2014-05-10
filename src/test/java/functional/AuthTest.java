@@ -8,10 +8,10 @@ import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import resourcing.ResourceSystem;
 import server.AccountService;
-import server.DatabaseService;
+import database.DatabaseService;
 import server.GameServer;
-import server.H2DatabaseService;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -28,7 +28,8 @@ public class AuthTest {
 
     @Before
     public void setUp() throws Exception {
-        DatabaseService service = new H2DatabaseService();
+        ResourceSystem rs = ResourceSystem.getInstance();
+        DatabaseService service = new DatabaseService(rs.getConfig("mysql"));
 
         MessageSystem ms = mock(MessageSystem.class);
         AddressService as = mock(AddressService.class);

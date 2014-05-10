@@ -30,6 +30,11 @@ public class VFSImpl implements VFS {
     }
 
     @Override
+    public String getFileName(String path) {
+        return Paths.get(path).getFileName().toString();
+    }
+
+    @Override
     public byte[] getBytes(String file) throws IOException {
         return Files.readAllBytes(Paths.get(getAbsolutePath(file)));
     }

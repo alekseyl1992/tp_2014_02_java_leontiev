@@ -1,4 +1,4 @@
-package datasets;
+package database.datasets;
 
 import javax.persistence.*;
 import java.io.Serializable;

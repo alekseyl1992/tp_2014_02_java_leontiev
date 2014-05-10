@@ -2,7 +2,7 @@ package messaging.messages;
 
 import messaging.Address;
 import server.AccountService;
-import server.DBException;
+import database.DBException;
 
 public class MsgRegisterUser extends MsgToAS {
 	private String login;

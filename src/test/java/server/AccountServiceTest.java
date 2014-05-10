@@ -1,9 +1,11 @@
 package server;
 
-import datasets.UserDataSet;
+import database.DatabaseService;
+import database.datasets.UserDataSet;
 import messaging.MessageSystem;
 import org.junit.Before;
 import org.junit.Test;
+import resourcing.ResourceSystem;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -13,8 +15,10 @@ public class AccountServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        DatabaseService databaseService = new H2DatabaseService();
-        MessageSystem ms = new MessageSystem(); //TODO
+        ResourceSystem rs = ResourceSystem.getInstance();
+
+        DatabaseService databaseService = new DatabaseService(rs.getConfig("h2"));
+        MessageSystem ms = new MessageSystem();
 
         accountService = new AccountService(ms, databaseService);
     }
